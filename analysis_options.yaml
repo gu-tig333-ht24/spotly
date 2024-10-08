@@ -1,1 +1,9 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_relative_imports: true
+    avoid_print: true
+    prefer_single_quotes: false
+    sort_child_properties_last: true
+    always_declare_return_types: true
