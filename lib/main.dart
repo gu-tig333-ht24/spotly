@@ -1,7 +1,10 @@
 //Flutter group project at Gothenburg University, group 5
+// The app "Spotly" focuses on saving and viewing places using Google Maps and giving users the ability to add
+// their favourite places. With this app you can snap an image of your location, edit it and save it.
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'main_page.dart'; // Importera MainPage
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
@@ -39,17 +42,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Great Places',
       theme: theme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Great Places'),
-        ),
-        body: Center(
-          child: Text(
-            'Welcome to Great Places!',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-      ),
+
+     home: const MainPage(), // Use  MainPage as app start page 
     );
   }
 }
