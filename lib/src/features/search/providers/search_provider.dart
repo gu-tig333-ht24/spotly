@@ -1,0 +1,1 @@
+// Provider for search logic

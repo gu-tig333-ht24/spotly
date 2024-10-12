@@ -1,22 +1,24 @@
-// main_page.dart describes buttons for home page, search page and settings page
-
 import 'package:flutter/material.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+import 'features/places/ui/pages/place_list_page.dart';
+import 'features/search/ui/pages/search_page.dart';
+import 'features/settings/ui/pages/settings_page.dart';
+
+class MainScaffold extends StatefulWidget {
+  const MainScaffold({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  State<MainScaffold> createState() => _MainScaffoldState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainScaffoldState extends State<MainScaffold> {
   int _selectedIndex = 0;
 
-  // List over different pages for menu choices 
-  final List<Widget> _pages = [
-    Center(child: Text('Home Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Search Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Settings Page', style: TextStyle(fontSize: 24))),
+  // List over different pages for menu choices
+  final List<Widget> _pages = const [
+    PlaceListPage(),
+    SearchPage(),
+    SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,13 +44,13 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.grey[800],
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey, 
+        unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.place),
+            label: 'Places',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
