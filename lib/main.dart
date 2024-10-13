@@ -4,10 +4,19 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'src/app.dart';
 
-void main() {
+Future<void> main() async {
+  // TODO: Any necessary pre-setup such as loading shared preferences
+
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
-    const MainApp(),
+    // Riverpod needs ProviderScope
+    const ProviderScope(
+      child: MainApp(),
+    ),
   );
 }
