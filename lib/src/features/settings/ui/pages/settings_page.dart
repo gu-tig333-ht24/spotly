@@ -2,14 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../main/ui/custom_app_bar.dart';
+import '../../../main/ui/custom_navigation_bar.dart';
 import '../../providers/settings_provider.dart'; // Import Riverpod-provider
 import 'privacy_security_page.dart';
 import 'help_support_page.dart';
 import 'contact_us_page.dart';
-import 'about_page.dart';  
+import 'about_page.dart';
 
 class SettingsPage extends ConsumerWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,9 +19,10 @@ class SettingsPage extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
+      appBar: const CustomAppBar(
+        appBarTitle: "Settings",
       ),
+      bottomNavigationBar: const CustomNavigationBar(),
       body: ListView(
         children: [
           // Notifications toggle switch
@@ -38,7 +41,8 @@ class SettingsPage extends ConsumerWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PrivacySecurityPage()),
+                MaterialPageRoute(
+                    builder: (context) => const PrivacySecurityPage()),
               );
             },
           ),
@@ -50,7 +54,8 @@ class SettingsPage extends ConsumerWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const HelpSupportPage()),
+                MaterialPageRoute(
+                    builder: (context) => const HelpSupportPage()),
               );
             },
           ),
@@ -66,7 +71,7 @@ class SettingsPage extends ConsumerWidget {
               );
             },
           ),
-       const Divider(),
+          const Divider(),
 
           // About
           ListTile(
