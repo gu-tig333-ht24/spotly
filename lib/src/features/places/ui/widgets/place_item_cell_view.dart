@@ -1,0 +1,1 @@
+// The widget cell view for a PlaceItem in PlaceListItemsPage
