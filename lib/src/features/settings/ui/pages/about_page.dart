@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:spotly/src/features/places/providers/places.dart';
+import 'package:spotly/src/core/widgets/places_list.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -15,7 +17,11 @@ class AboutPage extends StatelessWidget {
           child: Text(
             'This app is created by students at Gothenburg University.\n\n'
             '© 2024, TIG333, All Rights Reserved.',
-            style: const TextStyle(fontSize: 16, height: 1.5,color: Colors.white,),
+            style: const TextStyle(
+              fontSize: 16,
+              height: 1.5,
+              color: Colors.white,
+            ),
             textAlign: TextAlign.center,
           ),
         ),

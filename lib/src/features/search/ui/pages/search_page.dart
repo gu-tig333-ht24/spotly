@@ -16,7 +16,7 @@ class SearchPage extends StatelessWidget {
           "Search Content",
           style: TextStyle(
             fontSize: 24,
-            color: Colors.white,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
         ),
       ),

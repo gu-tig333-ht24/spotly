@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:spotly/src/features/places/providers/places.dart';
+import 'package:spotly/src/core/widgets/places_list.dart';
 
 enum BottomTab {
   places,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:spotly/src/features/places/providers/places.dart';
+import 'package:spotly/src/core/widgets/places_list.dart';
 
 class ContactUsPage extends StatelessWidget {
   const ContactUsPage({Key? key}) : super(key: key);

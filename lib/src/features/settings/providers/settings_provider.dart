@@ -2,8 +2,11 @@
 // StateNotifier used for handling of state and StateNotifierProvider used to expose it in the app
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spotly/src/features/places/providers/places.dart';
+import 'package:spotly/src/core/widgets/places_list.dart';
+import 'package:spotly/src/core/widgets/places_list.dart';
 
-// Define notifier to handle the state 
+// Define notifier to handle the state
 class SettingsNotifier extends StateNotifier<SettingsState> {
   SettingsNotifier() : super(SettingsState());
 
@@ -28,6 +31,7 @@ class SettingsState {
 }
 
 // Create a Provider that exposes to UI
-final settingsProvider = StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
+final settingsProvider =
+    StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
   return SettingsNotifier();
 });

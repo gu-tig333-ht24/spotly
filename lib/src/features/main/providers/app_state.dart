@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:spotly/src/features/places/providers/places.dart';
 
 import '../domain/bottom_tab.dart';
 
