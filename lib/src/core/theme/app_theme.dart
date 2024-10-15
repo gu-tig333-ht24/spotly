@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import '../../features/places/providers/places.dart';
-import '../widgets/places_list.dart';
 
 class AppTheme {
   // Private constructor, should not be instantiated.

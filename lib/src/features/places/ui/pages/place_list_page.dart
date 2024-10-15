@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../providers/places.dart';
 import '../../../main/ui/custom_app_bar.dart';
 import '../../../main/ui/custom_navigation_bar.dart';
-import '../../../../core/widgets/places_list.dart';
 
 class PlaceListPage extends StatelessWidget {
   const PlaceListPage({super.key});

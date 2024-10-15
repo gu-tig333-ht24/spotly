@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../places/providers/places.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/widgets/places_list.dart';
 
 import '../domain/bottom_tab.dart';
 import '../providers/app_state.dart';

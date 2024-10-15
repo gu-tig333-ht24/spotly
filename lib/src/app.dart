@@ -1,5 +1,4 @@
 // Add ProviderScope, that is required by Riverpod for state management handling
-// Change from StatefulWidget to StatelessWidget
 
 import 'package:flutter/material.dart';
 

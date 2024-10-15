@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import '../../places/providers/places.dart';
 
 import '../domain/bottom_tab.dart';
 

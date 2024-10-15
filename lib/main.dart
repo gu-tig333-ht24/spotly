@@ -26,7 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/features/main/domain/home_screen.dart'; // Import PlacesScreen
 import 'package:google_fonts/google_fonts.dart';
-import 'src/features/settings/ui/pages/settings_page.dart'; // Import PlacesScreen
+// Import PlacesScreen
 
 // Define your color scheme
 final colorScheme = ColorScheme.fromSeed(
