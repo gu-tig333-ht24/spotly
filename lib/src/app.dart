@@ -12,8 +12,6 @@ import 'features/main/providers/app_state_provider.dart';
 import 'features/places/ui/pages/place_list_page.dart';
 import 'features/search/ui/pages/search_page.dart';
 import 'features/settings/ui/pages/settings_page.dart';
-import 'package:spotly/src/features/places/providers/places.dart';
-import 'package:spotly/src/core/widgets/places_list.dart';
 
 class MainApp extends ConsumerWidget {
   const MainApp({super.key});

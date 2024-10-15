@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:spotly/src/features/places/providers/places.dart';
-import 'package:spotly/src/core/widgets/places_list.dart';
+import '../../../places/providers/places.dart';
+import '../../../../core/widgets/places_list.dart';
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +11,13 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Center(
           child: Text(
             'This app is created by students at Gothenburg University.\n\n'
             '© 2024, TIG333, All Rights Reserved.',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               height: 1.5,
               color: Colors.white,

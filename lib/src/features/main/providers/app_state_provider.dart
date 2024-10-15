@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spotly/src/features/places/providers/places.dart';
+import '../../places/providers/places.dart';
 
 import 'app_state.dart';
 import 'app_state_controller.dart';

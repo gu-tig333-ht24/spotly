@@ -63,12 +63,12 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:spotly/src/features/main/domain/bottom_tab.dart'; // Import BottomTab
-import 'package:spotly/src/features/places/providers/places.dart'; // Import PlacesScreen
-import 'package:spotly/src/features/settings/ui/pages/settings_page.dart'; // Import SettingsPage
+import 'bottom_tab.dart'; // Import BottomTab
+import '../../places/providers/places.dart'; // Import PlacesScreen
+import '../../settings/ui/pages/settings_page.dart'; // Import SettingsPage
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
             'Search Screen',
             style: TextStyle(
               color: Colors.white, // Vit text
-              fontSize: 20, // Valfri textstorlek
+              fontSize: 18, // Valfri textstorlek
             ),
           ),
         );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:spotly/src/features/places/providers/places.dart';
-import 'package:spotly/src/core/widgets/places_list.dart';
+import '../../features/places/providers/places.dart';
+import '../widgets/places_list.dart';
 
 class AppTheme {
   // Private constructor, should not be instantiated.
@@ -14,8 +14,7 @@ class AppTheme {
   );
 
   static ThemeData theme = ThemeData().copyWith(
-    useMaterial3: true,
-    scaffoldBackgroundColor: colorScheme.background,
+    scaffoldBackgroundColor: colorScheme.surface,
     colorScheme: colorScheme,
     textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
       titleSmall: GoogleFonts.ubuntuCondensed(

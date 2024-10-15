@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:spotly/src/features/places/providers/places.dart';
+import '../../places/providers/places.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spotly/src/core/widgets/places_list.dart';
+import '../../../core/widgets/places_list.dart';
 
 import '../domain/bottom_tab.dart';
 import '../providers/app_state.dart';

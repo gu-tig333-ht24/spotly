@@ -24,9 +24,9 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spotly/src/features/main/domain/home_screen.dart'; // Import PlacesScreen
+import 'src/features/main/domain/home_screen.dart'; // Import PlacesScreen
 import 'package:google_fonts/google_fonts.dart';
-import 'package:spotly/src/features/settings/ui/pages/settings_page.dart'; // Import PlacesScreen
+import 'src/features/settings/ui/pages/settings_page.dart'; // Import PlacesScreen
 
 // Define your color scheme
 final colorScheme = ColorScheme.fromSeed(
@@ -37,8 +37,7 @@ final colorScheme = ColorScheme.fromSeed(
 
 // Define your theme
 final theme = ThemeData().copyWith(
-  useMaterial3: true,
-  scaffoldBackgroundColor: colorScheme.background,
+  scaffoldBackgroundColor: colorScheme.surface,
   colorScheme: colorScheme,
   textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
     titleSmall: GoogleFonts.ubuntuCondensed(
@@ -62,7 +61,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
