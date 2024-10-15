@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/place.dart'; // Lägg till denna
+import 'package:spotly/src/core/models/place_detail.dart';
+import 'package:spotly/src/core/models/place.dart';
 
 class PlacesList extends StatelessWidget {
   const PlacesList({super.key, required this.places});
@@ -13,7 +15,7 @@ class PlacesList extends StatelessWidget {
         child: Text(
           'No places added yet',
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
         ),
       );
@@ -25,9 +27,16 @@ class PlacesList extends StatelessWidget {
         title: Text(
           places[index].title,
           style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
         ),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => PlaceDetailScreen(place: places[index]),
+            ),
+          );
+        },
       ),
     );
   }
