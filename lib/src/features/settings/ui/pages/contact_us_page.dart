@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../places/providers/places.dart';
-import '../../../../core/widgets/places_list.dart';
-import 'package:flutter/material.dart';
 
 class ContactUsPage extends StatelessWidget {
   const ContactUsPage({super.key});

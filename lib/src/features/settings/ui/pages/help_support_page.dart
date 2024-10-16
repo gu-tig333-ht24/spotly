@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../places/providers/places.dart';
-import '../../../../core/widgets/places_list.dart';
 
 class HelpSupportPage extends StatelessWidget {
   const HelpSupportPage({super.key});

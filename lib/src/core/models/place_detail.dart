@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:spotly/src/core/models/place.dart';
+import 'place.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
   const PlaceDetailScreen({super.key, required this.place});
@@ -17,7 +17,7 @@ class PlaceDetailScreen extends StatelessWidget {
         child: Text(
           place.title,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
         ),
       ),

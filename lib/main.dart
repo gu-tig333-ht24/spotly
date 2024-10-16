@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/features/main/domain/home_screen.dart'; // Import PlacesScreen
 import 'package:google_fonts/google_fonts.dart';
-import 'package:spotly/src/core/widgets/image_input.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
