@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/place.dart'; // Lägg till denna
-import '../models/place_detail.dart';
 import '../models/place.dart';
+import '../models/place_detail.dart';
+
 
 class PlacesList extends StatelessWidget {
   const PlacesList({super.key, required this.places});
