@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constants/app_constants.dart';
-import '../../providers/add_place_collection_form_controller.dart';
+import '../../providers/add_place_collection_form_provider.dart';
 
 class AddPlaceCollectionForm extends ConsumerStatefulWidget {
-  const AddPlaceCollectionForm({super.key});
+  const AddPlaceCollectionForm({
+    super.key,
+    this.onSubmit,
+  });
+
+  final VoidCallback? onSubmit;
 
   @override
   ConsumerState<AddPlaceCollectionForm> createState() =>
@@ -42,7 +47,7 @@ class _AddPlaceCollectionFormState
           onChanged: _formController.changeTitle,
           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           onFieldSubmitted:
-              formState.isValid ? (_) => Navigator.of(context).pop() : null,
+              formState.isValid ? (_) => widget.onSubmit?.call() : null,
           controller: _titleController,
           cursorColor: Colors.deepPurpleAccent,
           keyboardType: TextInputType.text,
