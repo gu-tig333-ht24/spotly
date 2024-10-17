@@ -21,7 +21,7 @@ class PlaceCollectionList extends ConsumerWidget {
         if (placeCollections.isEmpty) {
           return const Center(
             child: Text(
-              "No collections yet.",
+              "No collections available.",
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 24,

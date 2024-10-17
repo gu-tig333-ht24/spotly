@@ -14,7 +14,7 @@ class PlaceCollectionListController
     extends StateNotifier<AsyncValue<List<PlaceCollection>>> {
   PlaceCollectionListController() : super(const AsyncValue.data([]));
 
-  Future<void> addPlaceCollection(String title) async {
+  Future<void> addPlaceCollection(String title, String description) async {
     final List<PlaceCollection> currentCollections = List.from(
       state.value ?? [],
     );
@@ -25,6 +25,8 @@ class PlaceCollectionListController
           id: const Uuid().v4(),
           title: title,
           createdAt: DateTime.now(),
+          //description: description, // description parameter
+          description: 'No description provided', // Default description
         ),
       );
       state = AsyncData(currentCollections);

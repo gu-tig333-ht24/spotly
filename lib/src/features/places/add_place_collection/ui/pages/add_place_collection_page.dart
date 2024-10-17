@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
@@ -11,10 +10,10 @@ import '../widgets/add_place_collection_form.dart';
 class AddPlaceCollectionPage extends ConsumerWidget {
   const AddPlaceCollectionPage({super.key});
 
-  void _addPlaceCollection(BuildContext context, WidgetRef ref, String title) {
+  void _addPlaceCollection(BuildContext context, WidgetRef ref, String title, String description) {
     ref
         .read(placeCollectionListProvider.notifier)
-        .addPlaceCollection(title);
+        .addPlaceCollection(title, description);
     Navigator.of(context).pop();
   }
 
@@ -29,7 +28,7 @@ class AddPlaceCollectionPage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: formState.isValid
-                ? () => _addPlaceCollection(context, ref, formState.title)
+                ? () => _addPlaceCollection(context, ref, formState.title, formState.description)
                 : null,
             child: const Text(
               "Add",
@@ -41,7 +40,7 @@ class AddPlaceCollectionPage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
         child: AddPlaceCollectionForm(
-          onSubmit: () => _addPlaceCollection(context, ref, formState.title),
+          onSubmit: () => _addPlaceCollection(context, ref, formState.title, formState.description),
         ),
       ),
     );

@@ -254,8 +254,8 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   }
 
 
-    // Add functionality to save the place (for example, to a list or database)
-    // Here you could send the data to a provider or directly add it to a list
+    // Functionality to save the place (for example, to a list or database)
+
   void _savePlace() {
    final enteredTitle = _titleController.text;
    final enteredDescription = _descriptionController.text;
@@ -268,21 +268,19 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     return;
   }
   
-    // Skapa ett nytt Place-objekt
+    // Create the Place object with title, image, and description
   final newPlace = Place(
     title: enteredTitle,
-    description: 'Optional description', // Lägg till beskrivning om tillgänglig
-    image: _selectedImageFile ?? File(''), // Använd den valda bilden om tillgänglig, annars en tom fil (kanske i webbläge)
-    createdAt: DateTime.now(), // Tidpunkt då platsen skapades
+    description: enteredDescription, // Add description 
+    image: _selectedImageFile ?? File(''), // Add picture
+    createdAt: DateTime.now(), // Add creation date
   );
   
-    // You would save the data like this
-    // ref.read(userPlacesProvider.notifier).addPlace(enteredTitle, _selectedImageFile OR _selectedImageBytes);
-  // Lägg till platsen i listan via din provider
-  ref.read(userPlacesProvider.notifier).addPlace(newPlace);
 
-  print('Place saved! Title: $enteredTitle');
-    Navigator.of(context).pop(); // Go back after saving
+  // Add places to the list via Provider   
+  ref.read(userPlacesProvider.notifier).addPlace(newPlace);
+  print('Place saved! Title: $enteredTitle'); //to be removed later
+  Navigator.of(context).pop(); // Go back after saving
   }
 
   @override
@@ -319,49 +317,67 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
       appBar: AppBar(
         title: const Text('Add new Place'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Title',
-                labelStyle: TextStyle(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface, // Fixed color for label
+                  ),
+                ),
+                controller: _titleController,
+                style: TextStyle(
                   color: Theme.of(context)
                       .colorScheme
-                      .onSurface, // Fixed color for label
+                      .onSurface, // Fixed color for input text
                 ),
               ),
-              controller: _titleController,
-              style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface, // Fixed color for input text
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Description',  // New description field
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface, 
+                  ),
+                ),
+                controller: _descriptionController,  // Use description controller
+                maxLines: 3,  // Allow multi-line input for description
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface, 
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                ),
               ),
+              height: 250,
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: imageDisplay,
             ),
-            height: 250,
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: imageDisplay,
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton.icon(
-            onPressed: _savePlace,
-            icon: const Icon(Icons.add),
-            label: const Text('Add Place'),
-          ),
-        ],
+            const SizedBox(height: 10),
+            ElevatedButton.icon(
+              onPressed: _savePlace,
+              icon: const Icon(Icons.add),
+              label: const Text('Add Place'),
+            ),
+          ],
+        ),
       ),
     );
   }
- }
+}

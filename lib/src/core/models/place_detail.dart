@@ -45,8 +45,18 @@ class PlaceDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'Additional details about the place can go here.',
+                place.description, // Display the description from the place object
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                         ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Created on: ${place.createdAt.toLocal().toString()}', // Show when the place was created
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
               ),
