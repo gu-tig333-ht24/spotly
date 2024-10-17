@@ -4,10 +4,12 @@ import '../../../core/constants/app_constants.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String appBarTitle;
+  final List<Widget>? actions;
 
   const CustomAppBar({
     super.key,
     this.appBarTitle = AppConstants.appTitle,
+    this.actions,
   });
 
   @override
@@ -15,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       title: Text(appBarTitle),
+      actions: actions,
     );
   }
 
