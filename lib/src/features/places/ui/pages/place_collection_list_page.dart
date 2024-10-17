@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../main/ui/custom_app_bar.dart';
 import '../../../main/ui/custom_navigation_bar.dart';
-import '../../add_place_list/ui/pages/add_place_list_page.dart';
+import '../../add_place_collection/ui/pages/add_place_collection_page.dart';
 
 class PlaceListPage extends StatelessWidget {
   const PlaceListPage({super.key});
@@ -17,7 +17,7 @@ class PlaceListPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddPlaceListPage(),
+                  builder: (context) => const AddPlaceCollectionPage(),
                 ),
               );
             },

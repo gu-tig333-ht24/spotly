@@ -4,22 +4,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../main/ui/custom_app_bar.dart';
-import '../../providers/add_place_list_form_controller.dart';
-import '../widgets/add_place_list_form.dart';
+import '../../providers/add_place_collection_form_controller.dart';
+import '../widgets/add_place_collection_form.dart';
 
-class AddPlaceListPage extends StatelessWidget {
-  const AddPlaceListPage({super.key});
+class AddPlaceCollectionPage extends StatelessWidget {
+  const AddPlaceCollectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        appBarTitle: "Add Place List",
+        appBarTitle: "Add Place Collection",
         actions: [
           Consumer(
             builder: (_, WidgetRef ref, __) {
-              final AddPlaceListFormState formState =
-                  ref.watch(addPlaceListFormProvider);
+              final AddPlaceCollectionFormState formState =
+                  ref.watch(addPlaceCollectionFormProvider);
 
               return TextButton(
                 onPressed: formState.isValid
@@ -38,7 +38,7 @@ class AddPlaceListPage extends StatelessWidget {
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: AppSizes.s20),
-        child: AddPlaceListForm(),
+        child: AddPlaceCollectionForm(),
       ),
     );
   }

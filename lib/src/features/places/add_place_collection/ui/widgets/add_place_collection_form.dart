@@ -3,23 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constants/app_constants.dart';
-import '../../providers/add_place_list_form_controller.dart';
+import '../../providers/add_place_collection_form_controller.dart';
 
-class AddPlaceListForm extends ConsumerStatefulWidget {
-  const AddPlaceListForm({super.key});
+class AddPlaceCollectionForm extends ConsumerStatefulWidget {
+  const AddPlaceCollectionForm({super.key});
 
   @override
-  ConsumerState<AddPlaceListForm> createState() => _AddPlaceListFormState();
+  ConsumerState<AddPlaceCollectionForm> createState() =>
+      _AddPlaceCollectionFormState();
 }
 
-class _AddPlaceListFormState extends ConsumerState<AddPlaceListForm> {
-  late final AddPlaceListFormController _formController;
+class _AddPlaceCollectionFormState
+    extends ConsumerState<AddPlaceCollectionForm> {
+  late final AddPlaceCollectionFormController _formController;
   late final TextEditingController _titleController;
 
   @override
   void initState() {
     super.initState();
-    _formController = ref.read(addPlaceListFormProvider.notifier);
+    _formController = ref.read(addPlaceCollectionFormProvider.notifier);
     _titleController = TextEditingController();
   }
 
@@ -31,7 +33,8 @@ class _AddPlaceListFormState extends ConsumerState<AddPlaceListForm> {
 
   @override
   Widget build(BuildContext context) {
-    final AddPlaceListFormState formState = ref.watch(addPlaceListFormProvider);
+    final AddPlaceCollectionFormState formState =
+        ref.watch(addPlaceCollectionFormProvider);
 
     return Column(
       children: [
