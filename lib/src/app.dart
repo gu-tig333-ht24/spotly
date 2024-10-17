@@ -22,7 +22,7 @@ class MainApp extends ConsumerWidget {
       title: AppConstants.appTitle,
       theme: AppTheme.theme,
       home: switch (appState.selectedTab) {
-        BottomTab.places => const PlaceListPage(),
+        BottomTab.places => const PlaceCollectionListPage(),
         BottomTab.search => const SearchPage(),
         BottomTab.settings => const SettingsPage(),
       },
