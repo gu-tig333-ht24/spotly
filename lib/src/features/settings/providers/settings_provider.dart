@@ -3,6 +3,12 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Create a Provider that exposes to UI
+final settingsProvider =
+    StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
+  return SettingsNotifier();
+});
+
 // Define notifier to handle the state
 class SettingsNotifier extends StateNotifier<SettingsState> {
   SettingsNotifier() : super(SettingsState());
@@ -26,9 +32,3 @@ class SettingsState {
     );
   }
 }
-
-// Create a Provider that exposes to UI
-final settingsProvider =
-    StateNotifierProvider<SettingsNotifier, SettingsState>((ref) {
-  return SettingsNotifier();
-});
