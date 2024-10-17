@@ -1,5 +1,3 @@
-// Add ProviderScope, that is required by Riverpod for state management handling
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
