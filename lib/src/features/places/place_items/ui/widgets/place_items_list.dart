@@ -13,7 +13,7 @@ class PlaceItemsList extends StatelessWidget {
     if (items.isEmpty) {
       return const Center(
         child: Text(
-          "No places yet.",
+          "No places available.",
           style: TextStyle(
             color: Colors.white70,
             fontSize: 24,

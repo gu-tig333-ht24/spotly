@@ -1,34 +1,34 @@
 import 'package:uuid/uuid.dart';
-import 'dart:io';  // För att hantera filer
+import 'dart:io';  // For file handling 
 
 const uuid = Uuid();
 
 class Place {
   Place({
     required this.title,
-    required this.image, // Vi använder 'image' som ett File-objekt
-    required this.description, // Beskrivning av platsen
-    required this.createdAt,   // Tidpunkt då platsen skapades
+    required this.image, // Use image as file object  
+    required this.description, // Place description
+    required this.createdAt,   // Date when place is created
   }) : id = uuid.v4();
 
   final String id;
   final String title;
-  final File image; // Bilden representeras som ett File-objekt
-  final String description;  // Beskrivning
-  final DateTime createdAt;   // Tidpunkt för när platsen skapades
+  final File image; 
+  final String description; 
+  final DateTime createdAt;   
 
-  // Konvertera ett Place-objekt till en JSON-struktur
+  // Convert the Place object to JSON format
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'title': title,
-      'imagePath': image.path, // Använd 'image.path' för att spara filvägen
+      'imagePath': image.path, // Use 'image.path' to save the filepath 
       'description': description,
-      'createdAt': createdAt.toIso8601String(), // Spara tid i ISO-format
+      'createdAt': createdAt.toIso8601String(), // Save date in ISO format  
     };
   }
 
-  // Skapa ett Place-objekt från JSON-struktur
+  // Create a Place-object from JSON
   factory Place.fromJson(Map<String, dynamic> json) {
     return Place(
       title: json['title'],
