@@ -211,16 +211,22 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/main/providers/user_places.dart';  // Importera userPlacesProvider
+import 'place.dart';  
 
-class AddPlaceScreen extends StatefulWidget {
+
+
+class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
 
   @override
-  _AddPlaceScreenState createState() => _AddPlaceScreenState();
+  ConsumerState<AddPlaceScreen> createState() => _AddPlaceScreenState();  // Use ConsumerState
 }
 
-class _AddPlaceScreenState extends State<AddPlaceScreen> {
+class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController(); // Controller for description
   File? _selectedImageFile;
   Uint8List? _selectedImageBytes;
 
@@ -247,25 +253,35 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     }
   }
 
-  void _savePlace() {
-    final enteredTitle = _titleController.text;
-
-    if (enteredTitle.isEmpty ||
-        (_selectedImageFile == null && _selectedImageBytes == null)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide a title and image.')),
-      );
-      return;
-    }
 
     // Add functionality to save the place (for example, to a list or database)
     // Here you could send the data to a provider or directly add it to a list
+  void _savePlace() {
+   final enteredTitle = _titleController.text;
+   final enteredDescription = _descriptionController.text;
 
-    print('Place saved! Title: $enteredTitle');
-
+   if (enteredTitle.isEmpty || (_selectedImageFile == null && _selectedImageBytes == null) ||
+      enteredDescription.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please provide a title, desription and and image.')),
+    );
+    return;
+  }
+  
+    // Skapa ett nytt Place-objekt
+  final newPlace = Place(
+    title: enteredTitle,
+    description: 'Optional description', // Lägg till beskrivning om tillgänglig
+    image: _selectedImageFile ?? File(''), // Använd den valda bilden om tillgänglig, annars en tom fil (kanske i webbläge)
+    createdAt: DateTime.now(), // Tidpunkt då platsen skapades
+  );
+  
     // You would save the data like this
     // ref.read(userPlacesProvider.notifier).addPlace(enteredTitle, _selectedImageFile OR _selectedImageBytes);
+  // Lägg till platsen i listan via din provider
+  ref.read(userPlacesProvider.notifier).addPlace(newPlace);
 
+  print('Place saved! Title: $enteredTitle');
     Navigator.of(context).pop(); // Go back after saving
   }
 
@@ -314,7 +330,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 labelStyle: TextStyle(
                   color: Theme.of(context)
                       .colorScheme
-                      .onBackground, // Fixed color for label
+                      .onSurface, // Fixed color for label
                 ),
               ),
               controller: _titleController,
@@ -348,4 +364,4 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       ),
     );
   }
-}
+ }
