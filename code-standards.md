@@ -31,7 +31,7 @@ import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'features/main/domain/bottom_tab.dart';
 import 'features/main/providers/app_state_provider.dart';
-import 'features/places/ui/pages/place_list_page.dart';
+import 'features/places/ui/pages/place_collection_list_page.dart';
 import 'features/search/ui/pages/search_page.dart';
 import 'features/settings/ui/pages/settings_page.dart';
 

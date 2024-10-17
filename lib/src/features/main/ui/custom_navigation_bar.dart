@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/bottom_tab.dart';
-import '../providers/app_state.dart';
-import '../providers/app_state_controller.dart';
 import '../providers/app_state_provider.dart';
 
 class CustomNavigationBar extends ConsumerWidget {
