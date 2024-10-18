@@ -1,40 +1,61 @@
-import 'package:uuid/uuid.dart';
-import 'dart:io';  // For file handling 
-
-const uuid = Uuid();
-
 class Place {
   Place({
+    required this.id,
+    required this.collectionId,
     required this.title,
-    required this.image, // Use image as file object  
-    required this.description, // Place description
-    required this.createdAt,   // Date when place is created
-  }) : id = uuid.v4();
+    required this.imagePath,
+    required this.description,
+    required this.createdAt,
+  });
 
-  final String id;
+  factory Place.fromMap(Map<String, dynamic> map) {
+    return Place(
+      id: map["id"] as int,
+      collectionId: map["collectionId"] as int,
+      title: map.containsKey("title") ? map["title"] : "",
+      imagePath:
+          map.containsKey("imagePath") ? map["imagePath"] as String? : null,
+      description:
+          map.containsKey("description") ? map["description"] as String? : null,
+      createdAt: map.containsKey("createdAt")
+          ? DateTime.tryParse(map["createdAt"]) ?? DateTime.now()
+          : DateTime.now(),
+    );
+  }
+
+  final int id;
+  final int collectionId;
   final String title;
-  final File image; 
-  final String description; 
-  final DateTime createdAt;   
+  final String? imagePath;
+  final String? description;
+  final DateTime createdAt;
 
-  // Convert the Place object to JSON format
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'title': title,
-      'imagePath': image.path, // Use 'image.path' to save the filepath 
-      'description': description,
-      'createdAt': createdAt.toIso8601String(), // Save date in ISO format  
+      "id": id,
+      "collectionId": collectionId,
+      "title": title,
+      "imagePath": imagePath,
+      "description": description,
+      "createdAt": createdAt.toIso8601String(),
     };
   }
 
-  // Create a Place-object from JSON
-  factory Place.fromJson(Map<String, dynamic> json) {
+  Place copyWith({
+    int? id,
+    int? collectionId,
+    String? title,
+    String? imagePath,
+    String? description,
+    DateTime? createdAt,
+  }) {
     return Place(
-      title: json['title'],
-      image: File(json['imagePath']), // Använd 'File' för att skapa ett File-objekt från filvägen
-      description: json['description'],
-      createdAt: DateTime.parse(json['createdAt']),
+      id: id ?? this.id,
+      collectionId: collectionId ?? this.collectionId,
+      title: title ?? this.title,
+      imagePath: imagePath ?? this.imagePath,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }
