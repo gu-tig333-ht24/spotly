@@ -18,7 +18,11 @@ class CollectionListTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       tileColor: Colors.indigo,
-      title: Text(collection.title),
+      title: Text(
+        collection.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       subtitle: collection.description.isNotEmpty
           ? Text(
               collection.description,
@@ -30,7 +34,9 @@ class CollectionListTile extends StatelessWidget {
         Icons.chevron_right,
         color: Colors.white54,
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.s10),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.s10,
+      ),
     );
   }
 }
