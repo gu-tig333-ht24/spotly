@@ -25,7 +25,7 @@ class PlaceCollectionEntity {
       "id": id,
       "title": title,
       "description": description,
-      "createdAt": createdAt,
+      "createdAt": createdAt.toIso8601String(),
     };
   }
 
