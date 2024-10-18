@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
 
-import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/place_collection.dart';
 import '../../../place_items/ui/pages/place_items_page.dart';
 import '../../providers/place_collection_list_provider.dart';
+import 'collection_list_tile.dart';
 
-class PlaceCollectionList extends ConsumerWidget {
+class PlaceCollectionList extends ConsumerStatefulWidget {
   const PlaceCollectionList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _PlaceCollectionListState();
+}
+
+class _PlaceCollectionListState extends ConsumerState<PlaceCollectionList> {
+  late final PlaceCollectionListController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ref.read(placeCollectionListProvider.notifier);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.retrieveCollections();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final AsyncValue<List<PlaceCollection>> placeCollectionsValue = ref.watch(
       placeCollectionListProvider,
     );
@@ -34,28 +52,49 @@ class PlaceCollectionList extends ConsumerWidget {
           itemCount: placeCollections.length,
           itemBuilder: (BuildContext _, int index) {
             final PlaceCollection collection = placeCollections[index];
-
-            return ListTile(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const PlaceItemsPage(),
+            return SwipeActionCell(
+              key: ObjectKey(collection.id),
+              backgroundColor: Colors.transparent,
+              selectedForegroundColor: Colors.transparent,
+              trailingActions: [
+                SwipeAction(
+                    title: "Delete",
+                    color: Colors.red,
+                    onTap: (CompletionHandler handler) async {
+                      await handler(true);
+                      await _controller.deleteCollection(collection);
+                    }),
+                SwipeAction(
+                    title: "Edit",
+                    color: Colors.deepPurpleAccent,
+                    onTap: (CompletionHandler handler) async {
+                      // TODO: Navigate to Edit Page
+                    }),
+              ],
+              child: CollectionListTile(
+                collection: collection,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PlaceItemsPage(
+                      collection: collection,
+                    ),
+                  ),
                 ),
               ),
-              title: Text(collection.title),
-              trailing: const Icon(
-                Icons.chevron_right,
-                color: Colors.white54,
-              ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: AppSizes.s10),
             );
           },
-          separatorBuilder: (_, __) => const Divider(thickness: 0.5),
+          separatorBuilder: (_, __) => const SizedBox(height: 1),
         );
       },
       error: (e, _) => Center(
-        child: Text(e.toString()),
+        child: Text(
+          e.toString(),
+          style: const TextStyle(
+            color: Colors.white70,
+            fontSize: 24,
+          ),
+        ),
       ),
       loading: () => const Center(
         child: CircularProgressIndicator(
