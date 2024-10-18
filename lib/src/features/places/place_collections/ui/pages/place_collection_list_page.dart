@@ -55,7 +55,7 @@ class PlaceCollectionListPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddPlaceCollectionPage(),
+                  builder: (context) => AddPlaceCollectionPage(),
                 ),
               );
             },

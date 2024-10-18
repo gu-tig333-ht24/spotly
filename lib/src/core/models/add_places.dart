@@ -1,94 +1,39 @@
 // import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-// import '../../features/main/providers/user_places.dart';
-// import '../widgets/image_input.dart';
 // import 'dart:io';
-
-// class AddPlaceScreen extends ConsumerStatefulWidget {
-//   const AddPlaceScreen({super.key});
-
-//   @override
-//   ConsumerState<AddPlaceScreen> createState() {
-//     return _AddPlaceScreenState();
-//   }
-// }
-
-// class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
-//   final _titleController = TextEditingController();
-//   File? _selectedImage;
-
-//   void _savePlace() {
-//     final enteredTitle = _titleController.text;
-
-//     if (enteredTitle.isEmpty || _selectedImage == null) {
-//       return;
-//     }
-
-//     ref
-//         .read(userPlacesProvider.notifier)
-//         .addPlace(enteredTitle, _selectedImage!);
-
-//     Navigator.of(context).pop();
-//   }
-
-//   @override
-//   void dispose() {
-//     _titleController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Add new Place'),
-//       ),
-//       body: SingleChildScrollView(
-//         padding: const EdgeInsets.all(12),
-//         child: Column(
-//           children: [
-//             TextField(
-//               decoration: const InputDecoration(labelText: 'Title'),
-//               controller: _titleController,
-//               style: TextStyle(
-//                 color: Theme.of(context).colorScheme.onSurface,
-//               ),
-//             ),
-//             const SizedBox(height: 10),
-//             ImageInput(
-//               onPickImage: (image) {
-//                 _selectedImage = image;
-//               },
-//             ),
-//             const SizedBox(height: 16),
-//             ElevatedButton.icon(
-//               onPressed: _savePlace,
-//               icon: const Icon(Icons.add),
-//               label: const Text('Add Place'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-// import 'dart:io';
-// import 'dart:typed_data';
+// import 'dart:typed_data'; // För att använda Uint8List
 // import 'package:image_picker/image_picker.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'place.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// class AddPlaceScreen extends StatefulWidget {
+// import '../widgets/location_input.dart'; // Lägg till Riverpod för state management
+
+// // Definiera din provider
+// final userPlacesProvider =
+//     StateNotifierProvider<UserPlacesNotifier, List<Place>>((ref) {
+//   return UserPlacesNotifier();
+// });
+
+// // Skapa en StateNotifier för att hantera platser
+// class UserPlacesNotifier extends StateNotifier<List<Place>> {
+//   UserPlacesNotifier() : super([]);
+
+//   void addPlace(Place place) {
+//     state = [...state, place]; // Lägg till en ny plats i listan
+//   }
+// }
+
+// class AddPlaceScreen extends ConsumerStatefulWidget {
 //   const AddPlaceScreen({super.key});
 
 //   @override
 //   _AddPlaceScreenState createState() => _AddPlaceScreenState();
 // }
 
-// class _AddPlaceScreenState extends State<AddPlaceScreen> {
+// class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
 //   final _titleController = TextEditingController();
+//   final _descriptionController =
+//       TextEditingController(); // Beskrivningskontroller
 //   File? _selectedImageFile;
 //   Uint8List? _selectedImageBytes;
 
@@ -115,27 +60,35 @@
 //     }
 //   }
 
+//   // Lägg till funktionalitet för att spara platsen
 //   void _savePlace() {
 //     final enteredTitle = _titleController.text;
+//     final enteredDescription = _descriptionController.text;
 
 //     if (enteredTitle.isEmpty ||
-//         (_selectedImageFile == null && _selectedImageBytes == null)) {
-//       // If title or image is not set, show an error
+//         (_selectedImageFile == null && _selectedImageBytes == null) ||
+//         enteredDescription.isEmpty) {
 //       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('Please provide a title and image.')),
+//         const SnackBar(
+//           content: Text('Please provide a title, description, and an image.'),
+//         ),
 //       );
 //       return;
 //     }
 
-//     // Handle saving the place data (e.g., send to database, API, etc.)
-//     print('Place saved! Title: $enteredTitle');
+//     // Skapa ett nytt Place-objekt
+//     final newPlace = Place(
+//       title: enteredTitle,
+//       description: enteredDescription, // Lägger till beskrivning
+//       image: _selectedImageFile ?? File(''), // Hanterar bilden
+//       createdAt: DateTime.now(), // Tidpunkt då platsen skapades
+//     );
 
-//     // Reset form after saving
-//     _titleController.clear();
-//     setState(() {
-//       _selectedImageFile = null;
-//       _selectedImageBytes = null;
-//     });
+//     // Lägg till platsen i listan via din provider
+//     ref.read(userPlacesProvider.notifier).addPlace(newPlace);
+
+//     print('Place saved! Title: $enteredTitle');
+//     Navigator.of(context).pop(); // Gå tillbaka efter att platsen sparats
 //   }
 
 //   @override
@@ -146,7 +99,7 @@
 //       onPressed: _takePicture,
 //     );
 
-//     if (kIsWeb && _selectedImageBytes != null) {
+//     if (_selectedImageBytes != null) {
 //       imageDisplay = GestureDetector(
 //         onTap: _takePicture,
 //         child: Image.memory(
@@ -178,8 +131,41 @@
 //           Padding(
 //             padding: const EdgeInsets.all(10),
 //             child: TextField(
-//               decoration: const InputDecoration(labelText: 'Title'),
+//               decoration: InputDecoration(
+//                 labelText: 'Title',
+//                 labelStyle: TextStyle(
+//                   color: Theme.of(context)
+//                       .colorScheme
+//                       .onSurface, // Fast färg för etiketten
+//                 ),
+//               ),
 //               controller: _titleController,
+//               style: TextStyle(
+//                 color: Theme.of(context)
+//                     .colorScheme
+//                     .onSurface, // Fast färg för inmatad text
+//               ),
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(10),
+//             child: TextField(
+//               decoration: InputDecoration(
+//                 labelText: 'Description',
+//                 labelStyle: TextStyle(
+//                   color: Theme.of(context)
+//                       .colorScheme
+//                       .onSurface, // Fast färg för etiketten
+//                 ),
+//               ),
+//               controller:
+//                   _descriptionController, // Lägg till beskrivningskontroll
+//               style: TextStyle(
+//                 color: Theme.of(context)
+//                     .colorScheme
+//                     .onSurface, // Fast färg för inmatad text
+//               ),
+//               maxLines: 3, // Tillåter flera rader för beskrivning
 //             ),
 //           ),
 //           const SizedBox(height: 10),
@@ -196,6 +182,7 @@
 //             child: imageDisplay,
 //           ),
 //           const SizedBox(height: 10),
+//           const LocationInput(),
 //           ElevatedButton.icon(
 //             onPressed: _savePlace,
 //             icon: const Icon(Icons.add),
@@ -212,20 +199,43 @@ import 'dart:io';
 import 'dart:typed_data'; // För att använda Uint8List
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:spotly/src/core/models/place.dart';
-import 'package:spotly/src/features/main/providers/user_places.dart';
+import 'place.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../widgets/location_input.dart';
 
-class AddPlaceScreen extends StatefulWidget {
+// Definiera din provider
+final userPlacesProvider =
+    StateNotifierProvider<UserPlacesNotifier, List<Place>>((ref) {
+  return UserPlacesNotifier();
+});
+
+// Skapa en StateNotifier för att hantera platser
+class UserPlacesNotifier extends StateNotifier<List<Place>> {
+  UserPlacesNotifier() : super([]);
+
+  void addPlace(Place place) {
+    state = [...state, place]; // Lägg till en ny plats i listan
+  }
+}
+
+class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
 
   @override
   _AddPlaceScreenState createState() => _AddPlaceScreenState();
 }
 
-class _AddPlaceScreenState extends State<AddPlaceScreen> {
+class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
   File? _selectedImageFile;
   Uint8List? _selectedImageBytes;
+  PlaceLocation? _selectedLocation; // Lagra vald plats
+
+  // Callback för att ta emot plats från LocationInput
+  void _selectPlaceLocation(PlaceLocation location) {
+    _selectedLocation = location;
+  }
 
   void _takePicture() async {
     final imagePicker = ImagePicker();
@@ -250,40 +260,39 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     }
   }
 
-  // Add functionality to save the place (for example, to a list or database)
-  // Here you could send the data to a provider or directly add it to a list
+  // Lägg till funktionalitet för att spara platsen
   void _savePlace() {
     final enteredTitle = _titleController.text;
     final enteredDescription = _descriptionController.text;
 
     if (enteredTitle.isEmpty ||
         (_selectedImageFile == null && _selectedImageBytes == null) ||
-        enteredDescription.isEmpty) {
+        enteredDescription.isEmpty ||
+        _selectedLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Please provide a title, desription and and image.')),
+          content:
+              Text('Please provide a title, description, image, and location.'),
+        ),
       );
       return;
     }
 
-    // Skapa ett nytt Place-objekt
+    // Skapa ett nytt Place-objekt med platsinformation
     final newPlace = Place(
       title: enteredTitle,
-      description:
-          'Optional description', // Lägg till beskrivning om tillgänglig
-      image: _selectedImageFile ??
-          File(
-              ''), // Använd den valda bilden om tillgänglig, annars en tom fil (kanske i webbläge)
-      createdAt: DateTime.now(), // Tidpunkt då platsen skapades
+      description: enteredDescription,
+      image: _selectedImageFile ?? File(''),
+      createdAt: DateTime.now(),
+      //location: _selectedLocation!, // Använd vald plats
     );
 
-    // You would save the data like this
-    // ref.read(userPlacesProvider.notifier).addPlace(enteredTitle, _selectedImageFile OR _selectedImageBytes);
     // Lägg till platsen i listan via din provider
     ref.read(userPlacesProvider.notifier).addPlace(newPlace);
 
-    print('Place saved! Title: $enteredTitle');
-    Navigator.of(context).pop(); // Go back after saving
+    print(
+        'Place saved! Title: $enteredTitle, Location: ${_selectedLocation!.address}');
+    Navigator.of(context).pop(); // Gå tillbaka efter att platsen sparats
   }
 
   @override
@@ -329,17 +338,29 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
               decoration: InputDecoration(
                 labelText: 'Title',
                 labelStyle: TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface, // Fixed color for label
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               controller: _titleController,
               style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface, // Fixed color for input text
+                color: Theme.of(context).colorScheme.onSurface,
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Description',
+                labelStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              controller: _descriptionController,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              maxLines: 3,
             ),
           ),
           const SizedBox(height: 10),
@@ -356,6 +377,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             child: imageDisplay,
           ),
           const SizedBox(height: 10),
+          // Lägg till LocationInput med callback för att ta emot platsdata
+          LocationInput(onSelectLocation: _selectPlaceLocation),
           ElevatedButton.icon(
             onPressed: _savePlace,
             icon: const Icon(Icons.add),

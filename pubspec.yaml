@@ -17,6 +17,8 @@ dependencies:
   shared_preferences: ^2.0.11
   intl: ^0.17.0
   location: ^7.0.1
+  geolocator: ^9.0.2 # Lägg geolocator här i samma dependencies
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
