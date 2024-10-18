@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_swipe_action_cell/core/swipe_action_navigator_observer.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
@@ -18,6 +19,8 @@ class MainApp extends ConsumerWidget {
     final appState = ref.watch(appStateProvider);
 
     return MaterialApp(
+      // Close open cells when navigating
+      navigatorObservers: [SwipeActionNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       title: AppConstants.appTitle,
       theme: AppTheme.theme,
