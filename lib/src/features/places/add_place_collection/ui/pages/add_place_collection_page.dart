@@ -10,7 +10,8 @@ import '../widgets/add_place_collection_form.dart';
 class AddPlaceCollectionPage extends ConsumerWidget {
   const AddPlaceCollectionPage({super.key});
 
-  void _addPlaceCollection(BuildContext context, WidgetRef ref, String title, String description) {
+  void _addPlaceCollection(
+      BuildContext context, WidgetRef ref, String title, String description) {
     ref
         .read(placeCollectionListProvider.notifier)
         .addPlaceCollection(title, description);
@@ -23,24 +24,14 @@ class AddPlaceCollectionPage extends ConsumerWidget {
         ref.watch(addPlaceCollectionFormProvider);
 
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         appBarTitle: "Add Collection",
-        actions: [
-          TextButton(
-            onPressed: formState.isValid
-                ? () => _addPlaceCollection(context, ref, formState.title, formState.description)
-                : null,
-            child: const Text(
-              "Add",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
         child: AddPlaceCollectionForm(
-          onSubmit: () => _addPlaceCollection(context, ref, formState.title, formState.description),
+          onSubmit: () => _addPlaceCollection(
+              context, ref, formState.title, formState.description),
         ),
       ),
     );
