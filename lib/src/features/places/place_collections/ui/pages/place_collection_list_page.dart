@@ -13,21 +13,24 @@ class PlaceCollectionListPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddPlaceCollectionPage(),
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              backgroundColor: Colors.deepPurple,
-              foregroundColor: Colors.white70,
+          Tooltip(
+            message: "Add Collection",
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddPlaceCollectionPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white70,
+              ),
+              child: const Icon(Icons.add),
             ),
-            child: const Icon(Icons.add),
           ),
         ],
       ),
