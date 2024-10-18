@@ -82,23 +82,17 @@ class _AddPlaceScreenState extends ConsumerState<AddPlacePage> {
 
     // TODO: save image to storage
 
-    // Create the Place object with title, image, and description
     final newPlace = Place(
       id: -1,
       collectionId: widget.collectionId,
       title: title,
       description: description,
-      // image: _selectedImageFile ?? File(''), // Add picture
       imagePath: _selectedImageFile?.path,
       createdAt: DateTime.now(), // Add creation date
     );
 
-    // Add places to the list via Provider
-    // ref.read(userPlacesProvider.notifier).addPlace(newPlace);
-    // print('Place saved! Title: $title'); //to be removed later
-
     ref.read(placeListProvider.notifier).addPlace(newPlace);
-    Navigator.of(context).pop(); // Go back after saving
+    Navigator.of(context).pop();
   }
 
   @override
