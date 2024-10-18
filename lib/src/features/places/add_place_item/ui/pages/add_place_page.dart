@@ -212,21 +212,26 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../features/main/providers/user_places.dart';  // Importera userPlacesProvider
-import 'place.dart';  
-
-
+import '../../features/places/place_items/providers/user_places.dart'; // Importera userPlacesProvider
+import 'place.dart';
 
 class AddPlaceScreen extends ConsumerStatefulWidget {
-  const AddPlaceScreen({super.key});
+  const AddPlaceScreen({
+    super.key,
+    required this.collectionId,
+  });
+
+  final int collectionId;
 
   @override
-  ConsumerState<AddPlaceScreen> createState() => _AddPlaceScreenState();  // Use ConsumerState
+  ConsumerState<AddPlaceScreen> createState() =>
+      _AddPlaceScreenState(); // Use ConsumerState
 }
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController(); // Controller for description
+  final _descriptionController =
+      TextEditingController(); // Controller for description
   File? _selectedImageFile;
   Uint8List? _selectedImageBytes;
 
@@ -253,34 +258,37 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     }
   }
 
-
-    // Functionality to save the place (for example, to a list or database)
-
+  // Functionality to save the place (for example, to a list or database)
   void _savePlace() {
-   final enteredTitle = _titleController.text;
-   final enteredDescription = _descriptionController.text;
+    final enteredTitle = _titleController.text;
+    final enteredDescription = _descriptionController.text;
 
-   if (enteredTitle.isEmpty || (_selectedImageFile == null && _selectedImageBytes == null) ||
-      enteredDescription.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please provide a title, desription and and image.')),
-    );
-    return;
-  }
-  
+    if (enteredTitle.isEmpty ||
+        (_selectedImageFile == null && _selectedImageBytes == null) ||
+        enteredDescription.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please provide a title, desription and and image.')),
+      );
+      return;
+    }
+
     // Create the Place object with title, image, and description
-  final newPlace = Place(
-    title: enteredTitle,
-    description: enteredDescription, // Add description 
-    image: _selectedImageFile ?? File(''), // Add picture
-    createdAt: DateTime.now(), // Add creation date
-  );
-  
+    final newPlace = Place(
+      id: -1,
+      collectionId: widget.collectionId,
+      title: enteredTitle,
+      description: enteredDescription,
+      // Add description
+      // image: _selectedImageFile ?? File(''), // Add picture
+      imagePath: _selectedImageFile?.path,
+      createdAt: DateTime.now(), // Add creation date
+    );
 
-  // Add places to the list via Provider   
-  ref.read(userPlacesProvider.notifier).addPlace(newPlace);
-  print('Place saved! Title: $enteredTitle'); //to be removed later
-  Navigator.of(context).pop(); // Go back after saving
+    // Add places to the list via Provider
+    ref.read(userPlacesProvider.notifier).addPlace(newPlace);
+    print('Place saved! Title: $enteredTitle'); //to be removed later
+    Navigator.of(context).pop(); // Go back after saving
   }
 
   @override
@@ -344,15 +352,17 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Description',  // New description field
+                  labelText: 'Description', // New description field
                   labelStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface, 
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                controller: _descriptionController,  // Use description controller
-                maxLines: 3,  // Allow multi-line input for description
+                controller: _descriptionController,
+                // Use description controller
+                maxLines: 3,
+                // Allow multi-line input for description
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface, 
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
