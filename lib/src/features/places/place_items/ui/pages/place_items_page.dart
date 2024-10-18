@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/models/add_places.dart';
 import '../../../../../core/models/place_collection.dart';
 import '../../../../main/ui/custom_app_bar.dart';
+import '../../../add_place_item/ui/pages/add_place_page.dart';
 import '../widgets/place_items_list.dart';
 
 class PlaceItemsPage extends StatelessWidget {
@@ -18,24 +18,25 @@ class PlaceItemsPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         appBarTitle: collection.title,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const AddPlaceScreen(),
-                ),
-              );
-            },
-            child: const Text(
-              "Add",
-              style: TextStyle(fontSize: 20),
-            ),
-          )
-        ],
       ),
-      body: PlaceItemsList(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AddPlacePage(
+              collectionId: collection.id,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.deepPurple,
+        label: const Text(
+          "Add Place",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: PlaceList(collectionId: collection.id),
     );
   }
 }
