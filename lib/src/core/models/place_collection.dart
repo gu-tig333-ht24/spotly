@@ -8,7 +8,7 @@ class PlaceCollection {
 
   factory PlaceCollection.fromJson(Map<String, dynamic> json) {
     return PlaceCollection(
-      id: json.containsKey("id") ? json["id"] : "",
+      id: json.containsKey("id") ? json["id"] as int : -1,
       title: json.containsKey("title") ? json["title"] : "",
       description: json.containsKey("description") ? json["description"] : "",
       createdAt: json.containsKey("createdAt")
