@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 
 import '../../../../../core/models/place_collection.dart';
+import '../../../../../core/widgets/centered_error_text.dart';
+import '../../../../../core/widgets/centered_progress_indicator.dart';
 import '../../../place_items/ui/pages/place_items_page.dart';
 import '../../providers/place_collection_list_provider.dart';
 import 'collection_list_tile.dart';
@@ -52,6 +54,7 @@ class _PlaceCollectionListState extends ConsumerState<PlaceCollectionList> {
           itemCount: placeCollections.length,
           itemBuilder: (BuildContext _, int index) {
             final PlaceCollection collection = placeCollections[index];
+
             return SwipeActionCell(
               key: ObjectKey(collection.id),
               backgroundColor: Colors.transparent,
@@ -87,20 +90,8 @@ class _PlaceCollectionListState extends ConsumerState<PlaceCollectionList> {
           separatorBuilder: (_, __) => const SizedBox(height: 1),
         );
       },
-      error: (e, _) => Center(
-        child: Text(
-          e.toString(),
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 24,
-          ),
-        ),
-      ),
-      loading: () => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.deepPurpleAccent,
-        ),
-      ),
+      error: (e, _) => CenteredErrorText(errorMessage: e.toString()),
+      loading: () => const CenteredProgressIndicator(),
     );
   }
 }
