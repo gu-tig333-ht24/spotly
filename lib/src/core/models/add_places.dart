@@ -212,9 +212,8 @@ import 'dart:io';
 import 'dart:typed_data'; // För att använda Uint8List
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:path_provider/path_provider.dart'; // För lokal lagring
-import 'package:shared_preferences/shared_preferences.dart'; // För att spara metadata lokalt
-import 'package:path/path.dart' as path; // För att hantera filvägar
+import 'package:spotly/src/core/models/place.dart';
+import 'package:spotly/src/features/main/providers/user_places.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   const AddPlaceScreen({super.key});
@@ -251,46 +250,40 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     }
   }
 
-  // Spara bilden lokalt och returnera dess sökväg
-  Future<String> _saveImageLocally(File imageFile) async {
-    final appDir = await getApplicationDocumentsDirectory();
-    final fileName = path.basename(imageFile.path);
-    final savedImage = await imageFile.copy('${appDir.path}/$fileName');
-    return savedImage.path;
-  }
-
-  Future<void> _savePlace() async {
+  // Add functionality to save the place (for example, to a list or database)
+  // Here you could send the data to a provider or directly add it to a list
+  void _savePlace() {
     final enteredTitle = _titleController.text;
+    final enteredDescription = _descriptionController.text;
 
     if (enteredTitle.isEmpty ||
-        (_selectedImageFile == null && _selectedImageBytes == null)) {
+        (_selectedImageFile == null && _selectedImageBytes == null) ||
+        enteredDescription.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide a title and an image.')),
+        const SnackBar(
+            content: Text('Please provide a title, desription and and image.')),
       );
       return;
     }
 
-    String imagePath = '';
-    if (_selectedImageFile != null) {
-      imagePath = await _saveImageLocally(_selectedImageFile!);
-    }
-
-    // Spara titel och bildväg i SharedPreferences
-    final prefs = await SharedPreferences.getInstance();
-    final savedPlaces = prefs.getStringList('places') ?? [];
-    final newPlaceData = '$enteredTitle|$imagePath';
-    savedPlaces.add(newPlaceData);
-    await prefs.setStringList('places', savedPlaces);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Place saved locally!')),
+    // Skapa ett nytt Place-objekt
+    final newPlace = Place(
+      title: enteredTitle,
+      description:
+          'Optional description', // Lägg till beskrivning om tillgänglig
+      image: _selectedImageFile ??
+          File(
+              ''), // Använd den valda bilden om tillgänglig, annars en tom fil (kanske i webbläge)
+      createdAt: DateTime.now(), // Tidpunkt då platsen skapades
     );
 
-    _titleController.clear();
-    setState(() {
-      _selectedImageFile = null;
-      _selectedImageBytes = null;
-    });
+    // You would save the data like this
+    // ref.read(userPlacesProvider.notifier).addPlace(enteredTitle, _selectedImageFile OR _selectedImageBytes);
+    // Lägg till platsen i listan via din provider
+    ref.read(userPlacesProvider.notifier).addPlace(newPlace);
+
+    print('Place saved! Title: $enteredTitle');
+    Navigator.of(context).pop(); // Go back after saving
   }
 
   @override
@@ -327,38 +320,48 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       appBar: AppBar(
         title: const Text('Add new Place'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                decoration: const InputDecoration(labelText: 'Title'),
-                controller: _titleController,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Title',
+                labelStyle: TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface, // Fixed color for label
                 ),
               ),
-              height: 250,
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: imageDisplay,
+              controller: _titleController,
+              style: TextStyle(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface, // Fixed color for input text
+              ),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton.icon(
-              onPressed: _savePlace,
-              icon: const Icon(Icons.add),
-              label: const Text('Add Place'),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+              ),
             ),
-          ],
-        ),
+            height: 250,
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: imageDisplay,
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton.icon(
+            onPressed: _savePlace,
+            icon: const Icon(Icons.add),
+            label: const Text('Add Place'),
+          ),
+        ],
       ),
     );
   }

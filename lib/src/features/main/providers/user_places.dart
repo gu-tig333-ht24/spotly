@@ -25,7 +25,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/models/place.dart';
-import 'dart:io';
 
 class UserPlacesNotifier extends StateNotifier<List<Place>> {
   UserPlacesNotifier() : super([]) {

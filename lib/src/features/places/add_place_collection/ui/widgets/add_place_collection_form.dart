@@ -139,7 +139,7 @@ import '../../providers/add_place_collection_form_provider.dart';
 class AddPlaceCollectionForm extends ConsumerStatefulWidget {
   const AddPlaceCollectionForm({
     super.key,
-    this.onSubmit,
+    required this.onSubmit,
   });
 
   final VoidCallback? onSubmit;
@@ -153,17 +153,20 @@ class _AddPlaceCollectionFormState
     extends ConsumerState<AddPlaceCollectionForm> {
   late final AddPlaceCollectionFormController _formController;
   late final TextEditingController _titleController;
+  late final TextEditingController _descriptionController;  // Add description controller
 
   @override
   void initState() {
     super.initState();
     _formController = ref.read(addPlaceCollectionFormProvider.notifier);
     _titleController = TextEditingController();
+    _descriptionController = TextEditingController();  // Initialize description controller
   }
 
   @override
   void dispose() {
     _titleController.dispose();
+    _descriptionController.dispose();  // Dispose description controller
     super.dispose();
   }
 
@@ -206,6 +209,39 @@ class _AddPlaceCollectionFormState
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+              ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Add new TextFormField for description
+        TextFormField(
+          onChanged: _formController.changeDescription,  // Handle description changes
+          onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+          onFieldSubmitted:
+              formState.isValid ? (_) => widget.onSubmit?.call() : null,
+          controller: _descriptionController,
+          cursorColor: Colors.deepPurpleAccent,
+          keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.sentences,
+          textInputAction: TextInputAction.done,
+          maxLines: 3,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: "Description",
+            hintStyle: const TextStyle(
+              color: Colors.white54,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.deepPurple,
+              ),
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.deepPurpleAccent,
+              ),
               borderRadius: BorderRadius.circular(AppConstants.borderRadius),
             ),
           ),

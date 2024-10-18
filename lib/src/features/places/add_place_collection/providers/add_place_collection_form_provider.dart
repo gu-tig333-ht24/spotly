@@ -91,26 +91,34 @@ class AddPlaceCollectionFormController
   void changeTitle(String newTitle) {
     state = state.copyWith(title: newTitle);
   }
+// Method to handle description change
+  void changeDescription(String newDescription) {
+    state = state.copyWith(description: newDescription);
+  }
 }
 
 @immutable
 class AddPlaceCollectionFormState {
   const AddPlaceCollectionFormState({
     required this.title,
+    required this.description,
   });
 
   factory AddPlaceCollectionFormState.initial() =>
-      const AddPlaceCollectionFormState(title: "");
+      const AddPlaceCollectionFormState(title: "", description: "");
 
   final String title;
+  final String description;
 
-  bool get isValid => title.isNotEmpty;
+  bool get isValid => title.isNotEmpty && description.isNotEmpty;
 
   AddPlaceCollectionFormState copyWith({
     String? title,
+    String? description,
   }) {
     return AddPlaceCollectionFormState(
       title: title ?? this.title,
+      description: description ?? this.description,
     );
   }
 }

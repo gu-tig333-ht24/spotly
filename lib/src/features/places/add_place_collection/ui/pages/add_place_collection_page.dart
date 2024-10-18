@@ -95,8 +95,6 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-import 'dart:io'; // Lägg till för att hantera bilder
-import 'package:image_picker/image_picker.dart'; // Lägg till för att välja bilder
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../main/ui/custom_app_bar.dart';
@@ -109,12 +107,11 @@ import 'package:path/path.dart' as path; // För att hantera filvägar
 class AddPlaceCollectionPage extends ConsumerWidget {
   const AddPlaceCollectionPage({super.key});
 
-  // Lägg till _addPlaceCollection med två parametrar (title och imagePath)
   void _addPlaceCollection(
-      BuildContext context, WidgetRef ref, String title, String imagePath) {
+      BuildContext context, WidgetRef ref, String title, String description) {
     ref
         .read(placeCollectionListProvider.notifier)
-        .addPlaceCollection(title, imagePath);
+        .addPlaceCollection(title, description);
     Navigator.of(context).pop();
   }
 
@@ -146,11 +143,9 @@ class AddPlaceCollectionPage extends ConsumerWidget {
         appBarTitle: "Add Collection",
         actions: [
           TextButton(
-            onPressed: formState.isValid &&
-                    selectedImageFile !=
-                        null // Kontrollera att bild och titel finns
-                ? () => _addPlaceCollection(context, ref, formState.title,
-                    selectedImageFile!.path) // Skicka title och imagePath
+            onPressed: formState.isValid
+                ? () => _addPlaceCollection(
+                    context, ref, formState.title, formState.description)
                 : null,
             child: const Text(
               "Add",
@@ -161,19 +156,9 @@ class AddPlaceCollectionPage extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
-        child: Column(
-          children: [
-            // Lägg till en knapp för att välja bild
-            TextButton.icon(
-              icon: const Icon(Icons.image),
-              label: const Text("Pick an Image"),
-              onPressed: pickImage, // Välj bild från galleriet
-            ),
-            AddPlaceCollectionForm(
-              onSubmit: () => _addPlaceCollection(
-                  context, ref, formState.title, selectedImageFile!.path),
-            ),
-          ],
+        child: AddPlaceCollectionForm(
+          onSubmit: () => _addPlaceCollection(
+              context, ref, formState.title, formState.description),
         ),
       ),
     );

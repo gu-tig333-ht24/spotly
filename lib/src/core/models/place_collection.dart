@@ -39,6 +39,7 @@ class PlaceCollection {
     required this.title,
     required this.imagePath, // Lägg till bildvägen i konstruktorn
     required this.createdAt,
+    required this.description,
   });
 
   // Konvertera till JSON
@@ -54,10 +55,23 @@ class PlaceCollection {
   // Skapa en instans från JSON
   factory PlaceCollection.fromJson(Map<String, dynamic> json) {
     return PlaceCollection(
-      id: json['id'],
-      title: json['title'],
-      imagePath: json['imagePath'], // Lägg till här
-      createdAt: DateTime.parse(json['createdAt']),
+      id: json.containsKey("id") ? json["id"] : "",
+      title: json.containsKey("title") ? json["title"] : "",
+      createdAt: json.containsKey("createdAt")
+          ? DateTime.tryParse(json["createdAt"]) ?? DateTime.now()
+          : DateTime.now(),
     );
+  }
+
+  final String id;
+  final String title;
+  final DateTime createdAt;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "title": title,
+      "createdAt": createdAt,
+    };
   }
 }
