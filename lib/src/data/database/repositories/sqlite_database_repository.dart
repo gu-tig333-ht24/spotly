@@ -129,7 +129,18 @@ class SqliteDatabaseRepository implements DatabaseRepository {
       where: "id = ?",
       whereArgs: [id],
     );
-    return rowsDeleted > 0;
+    final deleted = rowsDeleted > 0;
+
+    if (deleted) {
+      // Delete Place:s that were "related" to the deleted Collection
+      await db.delete(
+        _placesTable,
+        where: "collectionId = ?",
+        whereArgs: [id],
+      );
+    }
+
+    return deleted;
   }
 
   // endregion

@@ -53,9 +53,13 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
       return Future.value(false);
     }
 
-    return Future.value(
-      _collections.remove(_collections[index]),
-    );
+    final deleted = _collections.remove(_collections[index]);
+    if (deleted) {
+      // Delete Place:s that were "related" to the deleted Collection
+      _places.removeWhere((place) => place.collectionId == id);
+    }
+
+    return Future.value(deleted);
   }
 
   // endregion
