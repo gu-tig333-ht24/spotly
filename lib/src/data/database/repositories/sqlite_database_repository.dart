@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import '../entities/place_collection_entity.dart';
+import '../entities/place_entity.dart';
 import '../interfaces/database_repository.dart';
 
 class SqliteDatabaseRepository implements DatabaseRepository {
@@ -11,6 +12,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
 
   final String _databaseName;
   static const _placeCollectionsTable = "place_collections";
+  static const _placesTable = "places";
 
   Database? _database;
 
@@ -40,6 +42,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
 
   Future<void> _createTables(Database db, int version) async {
     await _createPlaceCollectionsTable(db);
+    await _createPlacesTable(db);
   }
 
   Future<void> _createPlaceCollectionsTable(Database db) async {
@@ -48,6 +51,19 @@ class SqliteDatabaseRepository implements DatabaseRepository {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
+        createdAt TEXT NOT NULL
+      )
+      """);
+  }
+
+  Future<void> _createPlacesTable(Database db) async {
+    await db.execute("""
+        CREATE TABLE $_placesTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        collectionId INTEGER,
+        title TEXT NOT NULL,
+        description TEXT,
+        imagePath TEXT,
         createdAt TEXT NOT NULL
       )
       """);
@@ -76,18 +92,21 @@ class SqliteDatabaseRepository implements DatabaseRepository {
   @override
   Future<PlaceCollectionEntity?> retrievePlaceCollectionById(int id) async {
     final db = await database;
-    final List<Map<String, Object?>> map = await db.query(
+    final List<Map<String, Object?>> results = await db.query(
       _placeCollectionsTable,
-      columns: ["id", "title", "description", "createdAt"],
+      columns: [
+        "id",
+        "title",
+        "description",
+        "createdAt",
+      ],
       where: "id = ?",
       whereArgs: [id],
     );
 
-    if (map.isNotEmpty) {
-      return PlaceCollectionEntity.fromMap(map.first);
-    } else {
-      return null;
-    }
+    return results.isNotEmpty
+        ? PlaceCollectionEntity.fromMap(results.first)
+        : null;
   }
 
   @override
@@ -107,6 +126,73 @@ class SqliteDatabaseRepository implements DatabaseRepository {
     final db = await database;
     final rowsDeleted = await db.delete(
       _placeCollectionsTable,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+    return rowsDeleted > 0;
+  }
+
+  // endregion
+
+  // region Places
+
+  @override
+  Future<PlaceEntity> createPlace(PlaceEntity entity) async {
+    final db = await database;
+    final id = await db.insert(_placesTable, entity.toMap());
+    entity = entity.copyWith(id: id);
+    return entity;
+  }
+
+  @override
+  Future<List<PlaceEntity>> retrievesPlacesByCollectionId(
+      int collectionId) async {
+    final db = await database;
+    final result = await db.query(
+      _placesTable,
+      where: "collectionId = ?",
+      whereArgs: [collectionId],
+    );
+    return result.map((json) => PlaceEntity.fromMap(json)).toList();
+  }
+
+  @override
+  Future<PlaceEntity?> retrievePlaceById(int id) async {
+    final db = await database;
+    final List<Map<String, Object?>> results = await db.query(
+      _placesTable,
+      columns: [
+        "id",
+        "collectionId",
+        "title",
+        "imagePath",
+        "description",
+        "createdAt",
+      ],
+      where: "id = ?",
+      whereArgs: [id],
+    );
+
+    return results.isNotEmpty ? PlaceEntity.fromMap(results.first) : null;
+  }
+
+  @override
+  Future<bool> updatePlace(PlaceEntity entity) async {
+    final db = await database;
+    final rowsUpdated = await db.update(
+      _placesTable,
+      entity.toMap(),
+      where: "id = ?",
+      whereArgs: [entity.id],
+    );
+    return rowsUpdated > 0;
+  }
+
+  @override
+  Future<bool> deletePlaceById(int id) async {
+    final db = await database;
+    final rowsDeleted = await db.delete(
+      _placesTable,
       where: "id = ?",
       whereArgs: [id],
     );
