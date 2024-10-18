@@ -65,7 +65,6 @@ class PlaceCollectionListController
     final deleted = await _databaseService.deletePlaceCollectionById(
       collection.id,
     );
-
     if (!deleted) {
       // TODO: show snackbar message indicating that something went wrong?
       return;
