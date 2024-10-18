@@ -7,13 +7,15 @@ final addPlaceCollectionFormProvider = StateNotifierProvider.autoDispose<
   return AddPlaceCollectionFormController();
 });
 
-class AddPlaceCollectionFormController extends StateNotifier<AddPlaceCollectionFormState> {
-  AddPlaceCollectionFormController() : super(AddPlaceCollectionFormState.initial());
+class AddPlaceCollectionFormController
+    extends StateNotifier<AddPlaceCollectionFormState> {
+  AddPlaceCollectionFormController()
+      : super(AddPlaceCollectionFormState.initial());
 
   void changeTitle(String newTitle) {
     state = state.copyWith(title: newTitle);
   }
-// Method to handle description change
+
   void changeDescription(String newDescription) {
     state = state.copyWith(description: newDescription);
   }
@@ -27,12 +29,15 @@ class AddPlaceCollectionFormState {
   });
 
   factory AddPlaceCollectionFormState.initial() =>
-      const AddPlaceCollectionFormState(title: "", description: "");
+      const AddPlaceCollectionFormState(
+        title: "",
+        description: "",
+      );
 
   final String title;
   final String description;
 
-  bool get isValid => title.isNotEmpty && description.isNotEmpty;
+  bool get isValid => title.isNotEmpty;
 
   AddPlaceCollectionFormState copyWith({
     String? title,
