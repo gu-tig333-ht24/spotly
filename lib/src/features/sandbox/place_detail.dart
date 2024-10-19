@@ -64,7 +64,7 @@ import '../../core/models/place.dart';
 class PlaceDetailScreen extends StatelessWidget {
   const PlaceDetailScreen({super.key, required this.place});
 
-  final Place2 place;
+  final Place place;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class PlaceDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Show the picture place if it exists
-            if (place.image.path.isNotEmpty)
+            if (place.imagePath != null && place.imagePath!.isNotEmpty)
               Container(
                 height: 250,
                 width: double.infinity,
@@ -85,7 +85,7 @@ class PlaceDetailScreen extends StatelessWidget {
                   color: Colors.grey[300],
                 ),
                 child: Image.file(
-                  File(place.image.path),
+                  File(place.imagePath!),
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
@@ -104,17 +104,19 @@ class PlaceDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                place.description, // Display the description from the place object
+                place.description ?? "",
+                // Display the description from the place object
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
-                         ),
+                    ),
               ),
             ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'Created on: ${place.createdAt.toLocal().toString()}', // Show when the place was created
+                'Created on: ${place.createdAt.toLocal().toString()}',
+                // Show when the place was created
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
