@@ -35,7 +35,7 @@ class CollectionListTile extends StatelessWidget {
         color: Colors.white54,
       ),
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.s10,
+        horizontal: AppSizes.s20,
       ),
     );
   }
