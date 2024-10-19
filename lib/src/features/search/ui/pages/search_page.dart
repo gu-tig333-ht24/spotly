@@ -37,63 +37,108 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             .where((place) => place.title.toLowerCase().startsWith(query)) 
             .toList();
       } else {
-        _filteredPlaces = []; 
+        _filteredPlaces = [];
       }
     });
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     final placesList = ref.watch(placeCollectionListProvider);
 
-    return placesList.when(
-      data: (allPlaces) {
-        return Scaffold(
-          appBar: const CustomAppBar(),
-          bottomNavigationBar: const CustomNavigationBar(),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _searchController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: 'Search places...',
-                    hintStyle: const TextStyle(color: Colors.white60),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
+      body: Column(
+        children: [
+          _buildSearchField(),
+          Expanded(
+            child: placesList.when(
+              data: (allPlaces) => _buildPlacesList(),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => const Center(child: Text('Error loading places')),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TextField(
+        controller: _searchController,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: 'Search places...',
+          hintStyle: const TextStyle(color: Colors.white60),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear, color: Colors.white),
+                  onPressed: _clearSearch,
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlacesList() {
+    return _filteredPlaces.isEmpty
+        ? const Center(
+            child: Text(
+              'No places found.',
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        : ListView.separated(
+            itemCount: _filteredPlaces.length,
+            separatorBuilder: (context, index) => const Divider(
+              color: Colors.white24,
+              thickness: 1,
+              height: 1,
+            ),
+            itemBuilder: (context, index) {
+              final place = _filteredPlaces[index];
+              return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                leading: Icon(
+                  Icons.place,
+                  color: Colors.blue[300],
+                  size: 30.0,
+                ),
+                title: Text(
+                  place.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
                   ),
                 ),
-              ),
-              Expanded(
-                child: _filteredPlaces.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'No places found.',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _filteredPlaces.length,
-                        itemBuilder: (context, index) {
-                          final place = _filteredPlaces[index];
-                          return ListTile(
-                            title: Text(
-                              place.title,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => const Center(child: Text('Error loading places')),
-    );
+                subtitle: const Text(
+                  'Tap to view details',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12.0,
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white60,
+                  size: 16.0,
+                ),
+                onTap: () {
+                },
+              );
+            },
+          );
   }
 }
