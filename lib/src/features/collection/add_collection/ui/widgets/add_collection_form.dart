@@ -44,38 +44,43 @@ class _AddCollectionFormState extends ConsumerState<AddCollectionForm> {
     final AddCollectionFormState formState =
         ref.watch(addCollectionFormProvider);
 
-    return Form(
-      child: Column(
-        children: [
-          const SizedBox(height: AppSizes.s10),
-          CustomTextFormField(
-            controller: _titleController,
-            labelText: "Title",
-            isRequired: true,
-            onChanged: _formController.changeTitle,
-          ),
-          const SizedBox(height: AppSizes.s20),
-          CustomTextFormField(
-            controller: _descriptionController,
-            labelText: "Description",
-            hasClearButton: false,
-            maxLines: 3,
-            onChanged: _formController.changeDescription,
-            onSubmit: () => formState.isValid ? widget.onSubmit?.call() : null,
-          ),
-          const SizedBox(height: AppSizes.s20),
-          Row(
-            children: [
-              Expanded(
-                child: CustomFilledButton(
-                  onPressed:
-                      formState.isValid ? () => widget.onSubmit?.call() : null,
-                  text: "Save",
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
+      child: Form(
+        child: Column(
+          children: [
+            const SizedBox(height: AppSizes.s10),
+            CustomTextFormField(
+              controller: _titleController,
+              labelText: "Title",
+              isRequired: true,
+              onChanged: _formController.changeTitle,
+            ),
+            const SizedBox(height: AppSizes.s20),
+            CustomTextFormField(
+              controller: _descriptionController,
+              labelText: "Description",
+              hasClearButton: false,
+              maxLines: 3,
+              onChanged: _formController.changeDescription,
+              onSubmit: () =>
+                  formState.isValid ? widget.onSubmit?.call() : null,
+            ),
+            const SizedBox(height: AppSizes.s20),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomFilledButton(
+                    onPressed: formState.isValid
+                        ? () => widget.onSubmit?.call()
+                        : null,
+                    text: "Save",
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
