@@ -7,7 +7,6 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
-import '../../../../../core/dtos/place_dto.dart';
 import '../../../../../core/models/place_location.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../core/widgets/location_input.dart';
@@ -20,7 +19,7 @@ class AddPlaceForm extends ConsumerStatefulWidget {
     required this.onSubmit,
   });
 
-  final Function(PlaceDto place) onSubmit;
+  final VoidCallback onSubmit;
 
   @override
   ConsumerState<AddPlaceForm> createState() => _AddPlaceFormState();
@@ -63,7 +62,6 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
       return;
     }
 
-    // TODO: is this the correct place for it?
     if (_selectedImageFile != null) {
       final filePath = _selectedImageFile!.path;
       final appDir = await getApplicationDocumentsDirectory();
@@ -71,14 +69,7 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
       await File(filePath).copy("${appDir.path}/$fileName");
     }
 
-    widget.onSubmit(
-      PlaceDto(
-        title: _titleController.text,
-        description: _descriptionController.text,
-        imagePath: _selectedImageFile?.path,
-        location: _selectedLocation,
-      ),
-    );
+    widget.onSubmit();
   }
 
   @override
@@ -109,6 +100,7 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
             const SizedBox(height: AppSizes.s20),
             CustomImagePicker(onImageSelected: (File file) {
               _selectedImageFile = file;
+              _formController.changeImagePath(file.path);
             }),
             LocationInput(onSelectLocation: _selectPlaceLocation),
           ],
