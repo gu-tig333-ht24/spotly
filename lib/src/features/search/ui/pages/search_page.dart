@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../main/ui/custom_app_bar.dart';
-import '../../../main/ui/custom_navigation_bar.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_navigation_bar.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});

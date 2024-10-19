@@ -1,9 +1,9 @@
-import '../entities/place_collection_entity.dart';
+import '../entities/collection_entity.dart';
 import '../entities/place_entity.dart';
 import '../interfaces/database_repository.dart';
 
 class InMemoryDatabaseRepository implements DatabaseRepository {
-  final List<PlaceCollectionEntity> _collections = [];
+  final List<CollectionEntity> _collections = [];
   int _currentCollectionId = 0;
 
   final List<PlaceEntity> _places = [];
@@ -12,8 +12,8 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
   // region Collections
 
   @override
-  Future<PlaceCollectionEntity> createPlaceCollection(
-      PlaceCollectionEntity entity) {
+  Future<CollectionEntity> createCollection(
+      CollectionEntity entity) {
     _currentCollectionId += 1;
     entity = entity.copyWith(id: _currentCollectionId);
     _collections.add(entity);
@@ -21,19 +21,19 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<List<PlaceCollectionEntity>> retrievePlaceCollections() =>
+  Future<List<CollectionEntity>> retrieveCollections() =>
       Future.value(
         List.unmodifiable(_collections),
       );
 
   @override
-  Future<PlaceCollectionEntity?> retrievePlaceCollectionById(int id) =>
+  Future<CollectionEntity?> retrieveCollectionById(int id) =>
       Future.value(
         _collections.where((entity) => entity.id == id).firstOrNull,
       );
 
   @override
-  Future<bool> updatePlaceCollection(PlaceCollectionEntity entity) {
+  Future<bool> updateCollection(CollectionEntity entity) {
     int index = _collections.indexWhere((e) => e.id == entity.id);
     if (index == -1) {
       return Future.value(false);
@@ -47,7 +47,7 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<bool> deletePlaceCollectionById(int id) {
+  Future<bool> deleteCollectionById(int id) {
     int index = _collections.indexWhere((entity) => entity.id == id);
     if (index == -1) {
       return Future.value(false);
