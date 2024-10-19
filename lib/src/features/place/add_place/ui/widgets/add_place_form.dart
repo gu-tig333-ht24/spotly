@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/dtos/place_dto.dart';
 import '../../../../../core/models/place_location.dart';
