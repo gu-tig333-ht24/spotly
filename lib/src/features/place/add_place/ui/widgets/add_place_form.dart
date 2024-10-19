@@ -3,18 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/dtos/place_dto.dart';
 import '../../../../../core/models/place_location.dart';
-import '../../../../../core/widgets/custom_filled_button.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../core/widgets/location_input.dart';
 import '../../providers/add_place_form_provider.dart';
-import 'image_display.dart';
+import 'custom_image_picker.dart';
 
 class AddPlaceForm extends ConsumerStatefulWidget {
   const AddPlaceForm({
@@ -55,22 +53,7 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
     _selectedLocation = location;
   }
 
-  Future<void> _pickImage() async {
-    final imagePicker = ImagePicker();
-    final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage == null) return;
-
-    final appDir = await getApplicationDocumentsDirectory();
-    final fileName = path.basename(pickedImage.path);
-    final savedImage =
-        await File(pickedImage.path).copy('${appDir.path}/$fileName');
-
-    _selectedImageFile = savedImage; // Spara filen
-  }
-
-  void _submit(BuildContext context) {
+  Future<void> _submit(BuildContext context) async {
     if (_selectedLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -78,6 +61,14 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
         ),
       );
       return;
+    }
+
+    // TODO: is this the correct place for it?
+    if (_selectedImageFile != null) {
+      final filePath = _selectedImageFile!.path;
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = path.basename(filePath);
+      await File(filePath).copy("${appDir.path}/$fileName");
     }
 
     widget.onSubmit(
@@ -99,10 +90,6 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
       child: Form(
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: const Text("Pick an Image"),
-            ),
             const SizedBox(height: AppSizes.s10),
             CustomTextFormField(
               controller: _titleController,
@@ -119,37 +106,11 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
               onChanged: _formController.changeDescription,
               onSubmit: formState.isValid ? () => _submit(context) : null,
             ),
-            const SizedBox(height: AppSizes.s10),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                ),
-              ),
-              height: 250,
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: ImageDisplay(
-                onImageSelected: (File file) {
-                  _selectedImageFile = file;
-                },
-              ),
-            ),
-            const SizedBox(height: AppSizes.s10),
-            LocationInput(onSelectLocation: _selectPlaceLocation),
             const SizedBox(height: AppSizes.s20),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomFilledButton(
-                    onPressed:
-                        formState.isValid ? () => _submit(context) : null,
-                    text: "Save",
-                  ),
-                ),
-              ],
-            ),
+            CustomImagePicker(onImageSelected: (File file) {
+              _selectedImageFile = file;
+            }),
+            LocationInput(onSelectLocation: _selectPlaceLocation),
           ],
         ),
       ),
