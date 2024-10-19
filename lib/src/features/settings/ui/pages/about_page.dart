@@ -9,16 +9,16 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Text(
             'This app is created by students at Gothenburg University.\n\n'
             '© 2024, TIG333, All Rights Reserved.',
-            style: TextStyle(
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontSize: 16,
               height: 1.5,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface, // Dynamic text colour for dark/light mode support
             ),
             textAlign: TextAlign.center,
           ),

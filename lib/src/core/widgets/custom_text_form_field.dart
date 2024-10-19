@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/app_constants.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -24,23 +23,25 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       onChanged: (_) => onChanged(controller.text),
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       onFieldSubmitted: (_) => onSubmit,
       controller: controller,
-      cursorColor: Colors.deepPurpleAccent,
+      cursorColor: theme.colorScheme.primary,
       keyboardType: TextInputType.text,
       textCapitalization: TextCapitalization.none,
       textInputAction: TextInputAction.done,
       maxLines: maxLines,
       // Customize the input text style
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: theme.colorScheme.onSurface),
       decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText: isRequired ? "$labelText*" : labelText,
-        labelStyle: const TextStyle(
-          color: Colors.white70,
+        labelStyle: TextStyle(
+          color: theme.colorScheme.onSurface.withOpacity(0.7),
           fontSize: 24,
         ),
         suffixIcon: hasClearButton
@@ -48,24 +49,24 @@ class CustomTextFormField extends StatelessWidget {
                 onPressed: () {
                   controller.clear();
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.clear,
-                  color: Colors.redAccent,
+                  color: theme.colorScheme.error,
                 ),
                 tooltip: "Clear",
               )
             : null,
         // The style for the border by default and enabled
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.deepPurple,
+          borderSide: BorderSide(
+            color: theme.colorScheme.primary,
           ),
           borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         ),
-        // // The style for the border when focused
+        // The style for the border when focused
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.deepPurpleAccent,
+          borderSide: BorderSide(
+            color: theme.colorScheme.primary.withOpacity(0.7),
           ),
           borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         ),
