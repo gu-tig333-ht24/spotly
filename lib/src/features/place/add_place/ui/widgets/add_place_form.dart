@@ -11,6 +11,8 @@ import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/dtos/place_dto.dart';
 import '../../../../../core/models/place_location.dart';
+import '../../../../../core/widgets/custom_filled_button.dart';
+import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../core/widgets/location_input.dart';
 import '../../providers/add_place_form_provider.dart';
 import 'image_display.dart';
@@ -103,90 +105,20 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
               child: const Text("Pick an Image"),
             ),
             const SizedBox(height: AppSizes.s10),
-            TextFormField(
-              onChanged: _formController.changeTitle,
-              onTapOutside: (_) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
+            CustomTextFormField(
               controller: _titleController,
-              cursorColor: Colors.deepPurpleAccent,
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.none,
-              textInputAction: TextInputAction.done,
-              maxLines: 1,
-              // Customize the input text style
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: "Title*",
-                labelStyle: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 24,
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    _titleController.clear();
-                  },
-                  icon: const Icon(
-                    Icons.clear,
-                    color: Colors.redAccent,
-                  ),
-                  tooltip: "Clear",
-                ),
-                // The style for the border by default and enabled
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.deepPurple,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.borderRadius),
-                ),
-                // // The style for the border when focused
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.borderRadius),
-                ),
-              ),
+              labelText: "Title",
+              isRequired: true,
+              onChanged: _formController.changeTitle,
             ),
             const SizedBox(height: AppSizes.s20),
-            // Add new TextFormField for description
-            TextFormField(
-              onChanged: _formController.changeDescription,
-              onTapOutside: (_) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-              onFieldSubmitted:
-                  formState.isValid ? (_) => _submit(context) : null,
+            CustomTextFormField(
               controller: _descriptionController,
-              cursorColor: Colors.deepPurpleAccent,
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.sentences,
-              textInputAction: TextInputAction.done,
+              labelText: "Description",
+              hasClearButton: false,
               maxLines: 3,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: "Description",
-                labelStyle: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 24,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.deepPurple,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.borderRadius),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.borderRadius),
-                ),
-              ),
+              onChanged: _formController.changeDescription,
+              onSubmit: formState.isValid ? () => _submit(context) : null,
             ),
             const SizedBox(height: AppSizes.s10),
             Container(
@@ -211,21 +143,10 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
             Row(
               children: [
                 Expanded(
-                  child: FilledButton(
+                  child: CustomFilledButton(
                     onPressed:
                         formState.isValid ? () => _submit(context) : null,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Colors.deepPurpleAccent,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppConstants.borderRadius),
-                      ),
-                    ),
-                    child: const Text(
-                      "Save",
-                      style: TextStyle(fontSize: 24),
-                    ),
+                    text: "Save",
                   ),
                 ),
               ],
