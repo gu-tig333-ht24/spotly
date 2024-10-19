@@ -73,7 +73,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
-          height: 250,
+          height: 200,
           width: double.infinity,
           alignment: Alignment.center,
           child: ImageContentView(
