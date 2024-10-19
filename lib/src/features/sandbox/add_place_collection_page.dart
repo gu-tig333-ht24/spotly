@@ -91,11 +91,10 @@
 //   }
 // }
 
-import 'package:spotly/src/core/models/place.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_sizes.dart';
+import '../../core/models/place_location.dart';
 import '../../core/widgets/custom_app_bar.dart';
 import '../collection/add_collection/providers/add_collection_form_provider.dart';
 import '../collection/add_collection/ui/widgets/add_collection_form.dart';

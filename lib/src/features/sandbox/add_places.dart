@@ -201,6 +201,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../core/models/place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/models/place_location.dart';
 import '../../core/widgets/location_input.dart';
 
 // Definiera din provider
