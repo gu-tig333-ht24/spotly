@@ -23,12 +23,23 @@ class PlaceListTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
+      subtitle: place.description != null && place.description!.isNotEmpty
+          ? Text(
+              place.description!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+          : null,
+      leading: Icon(
+        Icons.image_rounded,
+        color: place.imagePath == null ? Colors.grey : Colors.green,
+      ),
       trailing: const Icon(
         Icons.chevron_right,
         color: Colors.white54,
       ),
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.s10,
+        horizontal: AppSizes.s20,
       ),
     );
   }

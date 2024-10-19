@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/dtos/place_dto.dart';
 import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
+import '../../../../../core/widgets/custom_icon_button.dart';
 import '../../../places/providers/place_list_provider.dart';
+import '../../providers/add_place_form_provider.dart';
 import '../widgets/add_place_form.dart';
 
 class AddPlacePage extends ConsumerWidget {
@@ -19,14 +20,14 @@ class AddPlacePage extends ConsumerWidget {
   void _addPlace(
     BuildContext context,
     WidgetRef ref,
-    PlaceDto dto,
+    AddPlaceFormState formState,
   ) {
     final place = Place(
       id: -1,
       collectionId: collectionId,
-      title: dto.title,
-      description: dto.description,
-      imagePath: dto.imagePath,
+      title: formState.title,
+      description: formState.description,
+      imagePath: formState.imagePath,
       createdAt: DateTime.now(),
     );
     ref.read(placeListProvider.notifier).addPlace(place);
@@ -35,16 +36,22 @@ class AddPlacePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final AddPlaceFormState formState = ref.watch(addPlaceFormProvider);
+
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         appBarTitle: "Add Place",
+        actions: [
+          CustomIconButton(
+            onPressed: formState.isValid
+                ? () => _addPlace(context, ref, formState)
+                : null,
+            icon: Icons.check_rounded,
+          ),
+        ],
       ),
       body: AddPlaceForm(
-        onSubmit: (PlaceDto dto) => _addPlace(
-          context,
-          ref,
-          dto,
-        ),
+        onSubmit: () => _addPlace(context, ref, formState),
       ),
     );
   }
