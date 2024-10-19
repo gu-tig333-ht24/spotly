@@ -20,6 +20,10 @@ dependencies:
   geolocator: ^9.0.2 # Lägg geolocator här i samma dependencies
   http: ^1.2.2
 
+  # Database
+  sqflite: ^2.4.0
+  path: ^1.9.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
