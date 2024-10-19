@@ -1,19 +1,18 @@
-import '../entities/place_collection_entity.dart';
+import '../entities/collection_entity.dart';
 import '../entities/place_entity.dart';
 
 abstract interface class DatabaseRepository {
-  // region PlaceCollection
+  // region Collection
 
-  Future<PlaceCollectionEntity> createPlaceCollection(
-      PlaceCollectionEntity entity);
+  Future<CollectionEntity> createCollection(CollectionEntity entity);
 
-  Future<List<PlaceCollectionEntity>> retrievePlaceCollections();
+  Future<List<CollectionEntity>> retrieveCollections();
 
-  Future<PlaceCollectionEntity?> retrievePlaceCollectionById(int id);
+  Future<CollectionEntity?> retrieveCollectionById(int id);
 
-  Future<bool> updatePlaceCollection(PlaceCollectionEntity entity);
+  Future<bool> updateCollection(CollectionEntity entity);
 
-  Future<bool> deletePlaceCollectionById(int id);
+  Future<bool> deleteCollectionById(int id);
 
   // endregion
 

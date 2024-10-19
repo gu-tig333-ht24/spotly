@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../main/ui/custom_app_bar.dart';
-import '../../../main/ui/custom_navigation_bar.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_navigation_bar.dart';
 import '../../providers/settings_provider.dart';
 import 'about_page.dart';
 import 'contact_us_page.dart';

@@ -19,6 +19,7 @@ dependencies:
   location: ^7.0.1
   geolocator: ^9.0.2 # Lägg geolocator här i samma dependencies
   http: ^1.2.2
+  flutter_swipe_action_cell: ^3.1.5
 
   # Database
   sqflite: ^2.4.0

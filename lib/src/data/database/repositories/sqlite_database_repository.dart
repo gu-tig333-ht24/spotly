@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../entities/place_collection_entity.dart';
+import '../entities/collection_entity.dart';
 import '../entities/place_entity.dart';
 import '../interfaces/database_repository.dart';
 
@@ -11,7 +11,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
   }) : _databaseName = databaseName;
 
   final String _databaseName;
-  static const _placeCollectionsTable = "place_collections";
+  static const _collectionsTable = "collections";
   static const _placesTable = "places";
 
   Database? _database;
@@ -41,13 +41,13 @@ class SqliteDatabaseRepository implements DatabaseRepository {
   }
 
   Future<void> _createTables(Database db, int version) async {
-    await _createPlaceCollectionsTable(db);
+    await _createCollectionsTable(db);
     await _createPlacesTable(db);
   }
 
-  Future<void> _createPlaceCollectionsTable(Database db) async {
+  Future<void> _createCollectionsTable(Database db) async {
     await db.execute("""
-        CREATE TABLE $_placeCollectionsTable (
+        CREATE TABLE $_collectionsTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
@@ -74,26 +74,25 @@ class SqliteDatabaseRepository implements DatabaseRepository {
   // region Collections
 
   @override
-  Future<PlaceCollectionEntity> createPlaceCollection(
-      PlaceCollectionEntity entity) async {
+  Future<CollectionEntity> createCollection(CollectionEntity entity) async {
     final db = await database;
-    final id = await db.insert(_placeCollectionsTable, entity.toMap());
+    final id = await db.insert(_collectionsTable, entity.toMap());
     entity = entity.copyWith(id: id);
     return entity;
   }
 
   @override
-  Future<List<PlaceCollectionEntity>> retrievePlaceCollections() async {
+  Future<List<CollectionEntity>> retrieveCollections() async {
     final db = await database;
-    final result = await db.query(_placeCollectionsTable);
-    return result.map((json) => PlaceCollectionEntity.fromMap(json)).toList();
+    final result = await db.query(_collectionsTable);
+    return result.map((json) => CollectionEntity.fromMap(json)).toList();
   }
 
   @override
-  Future<PlaceCollectionEntity?> retrievePlaceCollectionById(int id) async {
+  Future<CollectionEntity?> retrieveCollectionById(int id) async {
     final db = await database;
     final List<Map<String, Object?>> results = await db.query(
-      _placeCollectionsTable,
+      _collectionsTable,
       columns: [
         "id",
         "title",
@@ -104,16 +103,14 @@ class SqliteDatabaseRepository implements DatabaseRepository {
       whereArgs: [id],
     );
 
-    return results.isNotEmpty
-        ? PlaceCollectionEntity.fromMap(results.first)
-        : null;
+    return results.isNotEmpty ? CollectionEntity.fromMap(results.first) : null;
   }
 
   @override
-  Future<bool> updatePlaceCollection(PlaceCollectionEntity entity) async {
+  Future<bool> updateCollection(CollectionEntity entity) async {
     final db = await database;
     final rowsUpdated = await db.update(
-      _placeCollectionsTable,
+      _collectionsTable,
       entity.toMap(),
       where: "id = ?",
       whereArgs: [entity.id],
@@ -122,10 +119,10 @@ class SqliteDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<bool> deletePlaceCollectionById(int id) async {
+  Future<bool> deleteCollectionById(int id) async {
     final db = await database;
     final rowsDeleted = await db.delete(
-      _placeCollectionsTable,
+      _collectionsTable,
       where: "id = ?",
       whereArgs: [id],
     );

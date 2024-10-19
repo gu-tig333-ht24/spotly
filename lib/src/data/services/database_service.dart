@@ -1,10 +1,10 @@
 import '../../core/models/place.dart';
-import '../../core/models/place_collection.dart';
-import '../database/entities/place_collection_entity.dart';
+import '../../core/models/collection.dart';
+import '../database/entities/collection_entity.dart';
 import '../database/entities/place_entity.dart';
 import '../database/interfaces/database_repository.dart';
-import '../utils/place_collection_entity_extensions.dart';
-import '../utils/place_collection_extensions.dart';
+import '../utils/collection_entity_extensions.dart';
+import '../utils/collection_extensions.dart';
 import '../utils/place_entity_extensions.dart';
 import '../utils/place_extensions.dart';
 
@@ -16,10 +16,12 @@ class DatabaseService {
 
   // region Collections
 
-  Future<PlaceCollection> createPlaceCollection(
-      String title, String description) async {
-    final entity = await _repository.createPlaceCollection(
-      PlaceCollectionEntity(
+  Future<Collection> createCollection(
+    String title,
+    String description,
+  ) async {
+    final entity = await _repository.createCollection(
+      CollectionEntity(
         id: null,
         title: title,
         description: description,
@@ -29,20 +31,20 @@ class DatabaseService {
     return entity.toModel(id: entity.id!);
   }
 
-  Future<List<PlaceCollection>> getPlaceCollections() async {
-    final List<PlaceCollectionEntity> entities =
-        await _repository.retrievePlaceCollections();
+  Future<List<Collection>> retrieveCollections() async {
+    final List<CollectionEntity> entities =
+        await _repository.retrieveCollections();
     return entities
-        .map<PlaceCollection?>(
+        .map<Collection?>(
           (entity) => entity.id == null ? null : entity.toModel(id: entity.id!),
         )
-        .whereType<PlaceCollection>()
+        .whereType<Collection>()
         .toList();
   }
 
-  Future<PlaceCollection?> getPlaceCollectionById(int id) async {
-    final PlaceCollectionEntity? entity =
-        await _repository.retrievePlaceCollectionById(id);
+  Future<Collection?> retrieveCollectionById(int id) async {
+    final CollectionEntity? entity =
+        await _repository.retrieveCollectionById(id);
     if (entity == null || entity.id == null) {
       return null;
     }
@@ -50,11 +52,11 @@ class DatabaseService {
     return entity.toModel(id: entity.id!);
   }
 
-  Future<bool> updatePlaceCollection(PlaceCollection placeCollection) =>
-      _repository.updatePlaceCollection(placeCollection.toEntity());
+  Future<bool> updateCollection(Collection collection) =>
+      _repository.updateCollection(collection.toEntity());
 
-  Future<bool> deletePlaceCollectionById(int id) =>
-      _repository.deletePlaceCollectionById(id);
+  Future<bool> deleteCollectionById(int id) =>
+      _repository.deleteCollectionById(id);
 
   // endregion
 
