@@ -12,7 +12,11 @@ class AddCollectionPage extends ConsumerWidget {
   const AddCollectionPage({super.key});
 
   void _addCollection(
-      BuildContext context, WidgetRef ref, String title, String description) {
+    BuildContext context,
+    WidgetRef ref,
+    String title,
+    String description,
+  ) {
     ref.read(collectionListProvider.notifier).addCollection(title, description);
     Navigator.of(context).pop();
   }
