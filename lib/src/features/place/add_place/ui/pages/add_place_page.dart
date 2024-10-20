@@ -42,11 +42,15 @@ class AddPlacePage extends ConsumerWidget {
       appBar: CustomAppBar(
         appBarTitle: "Add Place",
         actions: [
-          CustomIconButton(
-            onPressed: formState.isValid
-                ? () => _addPlace(context, ref, formState)
-                : null,
-            icon: Icons.check_rounded,
+          Tooltip(
+            message: "Save",
+            preferBelow: true,
+            child: CustomIconButton(
+              onPressed: formState.isValid
+                  ? () => _addPlace(context, ref, formState)
+                  : null,
+              icon: Icons.check_rounded,
+            ),
           ),
         ],
       ),

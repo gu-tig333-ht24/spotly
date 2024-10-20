@@ -49,17 +49,25 @@ class PlaceListPage extends StatelessWidget {
       appBar: CustomAppBar(
         appBarTitle: collection.title,
         actions: [
-          Consumer(
-            builder: (BuildContext context, WidgetRef ref, _) {
-              return CustomIconButton(
-                onPressed: () => pickFile(context, ref),
-                icon: Icons.file_open_rounded,
-              );
-            },
+          Tooltip(
+            message: "Import a Place",
+            preferBelow: true,
+            child: Consumer(
+              builder: (BuildContext context, WidgetRef ref, _) {
+                return CustomIconButton(
+                  onPressed: () => pickFile(context, ref),
+                  icon: Icons.file_open_rounded,
+                );
+              },
+            ),
           ),
-          CustomIconButton(
-            onPressed: () => _navigateToAddPlacePage(context),
-            icon: Icons.add_rounded,
+          Tooltip(
+            message: "Add a Place",
+            preferBelow: true,
+            child: CustomIconButton(
+              onPressed: () => _navigateToAddPlacePage(context),
+              icon: Icons.add_rounded,
+            ),
           ),
         ],
       ),
