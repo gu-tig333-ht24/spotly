@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/location.dart';
-import '../../../../sandbox/map_screen.dart';
+import '../pages/map_page.dart';
 
 class LocationMapView extends StatelessWidget {
   const LocationMapView({
@@ -54,7 +54,7 @@ class LocationMapView extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (ctx) => MapScreen(
+                builder: (ctx) => MapPage(
                   location: location,
                   isSelecting: false,
                 ),
