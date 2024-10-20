@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/models/place.dart';
 import '../../../../data/providers/database_providers.dart';
@@ -73,5 +77,23 @@ class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
         debugPrint("❌ -> addPlace(), error: $e");
       }
     }
+  }
+
+  Future<void> importPlace(File file, int collectionId) async {
+    final String content = await file.readAsString();
+    final Map<String, dynamic> map = jsonDecode(content);
+    Place place = Place.fromMap(map);
+
+    if (map.containsKey("image") && map["image"] != null) {
+      // Decode the image
+      final imageBytes = base64Decode(map["image"]);
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = "${directory.path}/${place.title}.png";
+      final imageFile = File(imagePath);
+      await imageFile.writeAsBytes(imageBytes);
+      place = place.copyWith(imagePath: imagePath);
+    }
+
+    await addPlace(place);
   }
 }

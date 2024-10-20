@@ -6,6 +6,8 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/centered_error_text.dart';
 import '../../../../../core/widgets/centered_progress_indicator.dart';
+import '../../../../share/providers/share_provider.dart';
+import '../../../../share/services/share_service.dart';
 import '../../../place_detail/ui/pages/place_detail_page.dart';
 import '../../providers/place_list_provider.dart';
 import 'place_list_tile.dart';
@@ -64,6 +66,25 @@ class _PlaceListViewState extends ConsumerState<PlaceListView> {
               key: ObjectKey(place.id),
               backgroundColor: Colors.transparent,
               selectedForegroundColor: Colors.transparent,
+              leadingActions: [
+                SwipeAction(
+                    title: "Share",
+                    color: Colors.deepPurpleAccent,
+                    onTap: (CompletionHandler handler) async {
+                      handler(false);
+
+                      final ShareService shareService =
+                          ref.read(shareServiceProvider);
+                      final RenderBox? box =
+                          context.findRenderObject() as RenderBox?;
+                      Rect? sharePositionOrigin;
+                      if (await shareService.isThisDeviceIpad()) {
+                        sharePositionOrigin =
+                            box!.localToGlobal(Offset.zero) & box.size;
+                      }
+                      await shareService.sharePlace(place, sharePositionOrigin);
+                    })
+              ],
               trailingActions: [
                 SwipeAction(
                     title: "Delete",
