@@ -1,6 +1,7 @@
 import '../../core/models/place.dart';
 import '../../core/models/collection.dart';
 import '../database/entities/collection_entity.dart';
+import '../database/entities/location_entity.dart';
 import '../database/entities/place_entity.dart';
 import '../database/interfaces/database_repository.dart';
 import '../utils/collection_entity_extensions.dart';
@@ -63,6 +64,16 @@ class DatabaseService {
   // region Places
 
   Future<Place> createPlace(Place place) async {
+    LocationEntity? location;
+    if (place.location != null) {
+      location = LocationEntity(
+        id: null,
+        latitude: place.location!.latitude,
+        longitude: place.location!.longitude,
+        address: place.location!.address ?? "",
+      );
+    }
+
     final entity = await _repository.createPlace(
       PlaceEntity(
         id: null,
@@ -71,6 +82,7 @@ class DatabaseService {
         imagePath: place.imagePath,
         description: place.description,
         createdAt: DateTime.now(),
+        location: location,
       ),
     );
     return entity.toModel(id: entity.id!);
