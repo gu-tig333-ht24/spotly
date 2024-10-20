@@ -2,7 +2,7 @@ class CollectionEntity {
   CollectionEntity({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     required this.createdAt,
   });
 
@@ -10,14 +10,14 @@ class CollectionEntity {
     return CollectionEntity(
       id: map["id"] as int?,
       title: map["title"] as String,
-      description: map["description"] as String,
+      description: map["description"] as String?,
       createdAt: DateTime.parse(map["createdAt"] as String),
     );
   }
 
   final int? id;
   final String title;
-  final String description;
+  final String? description;
   final DateTime createdAt;
 
   Map<String, Object?> toMap() {

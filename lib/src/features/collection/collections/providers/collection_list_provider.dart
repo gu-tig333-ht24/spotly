@@ -21,7 +21,7 @@ class CollectionListController
 
   final DatabaseService _databaseService;
 
-  Future<void> addCollection(String title, String description) async {
+  Future<void> addCollection(String title, String? description) async {
     final Collection newCollection =
         await _databaseService.createCollection(
       title,
