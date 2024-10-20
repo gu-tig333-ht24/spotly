@@ -53,7 +53,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
         CREATE TABLE $_collectionsTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        description TEXT NOT NULL,
+        description TEXT,
         createdAt TEXT NOT NULL
       )
       """);
@@ -65,7 +65,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         latitude REAL NOT NULL,
         longitude REAL NOT NULL,
-        address TEXT NOT NULL
+        address TEXT
       )
       """);
   }
@@ -211,7 +211,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
           id: row["locationId"] as int?,
           latitude: row["latitude"] as double,
           longitude: row["longitude"] as double,
-          address: row["address"] as String,
+          address: row["address"] as String?,
         );
       }
 
@@ -220,7 +220,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
         collectionId: row["collectionId"] as int,
         title: row["title"] as String,
         description: row["description"] as String,
-        imagePath: row["imagePath"] as String,
+        imagePath: row["imagePath"] as String?,
         createdAt: DateTime.parse(row["createdAt"] as String),
         location: location,
       );
@@ -262,7 +262,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
         id: placeMap["locationId"] as int?,
         latitude: placeMap["latitude"] as double,
         longitude: placeMap["longitude"] as double,
-        address: placeMap["address"] as String,
+        address: placeMap["address"] as String?,
       );
     }
 
