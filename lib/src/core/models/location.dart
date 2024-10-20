@@ -7,9 +7,9 @@ class Location {
 
   factory Location.fromMap(Map<String, dynamic> json) {
     return Location(
-      latitude: json["latitude"],
-      longitude: json["longitude"],
-      address: json["address"],
+      latitude: json["latitude"] as double,
+      longitude: json["longitude"] as double,
+      address: json["address"] as String?,
     );
   }
 
