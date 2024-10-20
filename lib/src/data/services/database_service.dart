@@ -19,7 +19,7 @@ class DatabaseService {
 
   Future<Collection> createCollection(
     String title,
-    String description,
+    String? description,
   ) async {
     final entity = await _repository.createCollection(
       CollectionEntity(
