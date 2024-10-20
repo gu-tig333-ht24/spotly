@@ -20,6 +20,7 @@ dependencies:
   location: ^7.0.1
   geolocator: ^9.0.2 # Lägg geolocator här i samma dependencies
   http: ^1.2.2
+  google_maps_flutter: ^2.3.0
   flutter_swipe_action_cell: ^3.1.5
 
   # Database
