@@ -1,3 +1,5 @@
+import 'location.dart';
+
 class Place {
   Place({
     required this.id,
@@ -6,6 +8,7 @@ class Place {
     required this.imagePath,
     required this.description,
     required this.createdAt,
+    this.location,
   });
 
   factory Place.fromMap(Map<String, dynamic> map) {
@@ -20,6 +23,7 @@ class Place {
       createdAt: map.containsKey("createdAt")
           ? DateTime.tryParse(map["createdAt"]) ?? DateTime.now()
           : DateTime.now(),
+      location: map["location"] as Location?,
     );
   }
 
@@ -30,6 +34,8 @@ class Place {
   final String? description;
   final DateTime createdAt;
 
+  final Location? location;
+
   Map<String, dynamic> toMap() {
     return {
       "id": id,
@@ -38,6 +44,7 @@ class Place {
       "imagePath": imagePath,
       "description": description,
       "createdAt": createdAt.toIso8601String(),
+      "location": location,
     };
   }
 
@@ -48,6 +55,7 @@ class Place {
     String? imagePath,
     String? description,
     DateTime? createdAt,
+    Location? location,
   }) {
     return Place(
       id: id ?? this.id,
@@ -56,6 +64,7 @@ class Place {
       imagePath: imagePath ?? this.imagePath,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
+      location: location ?? this.location,
     );
   }
 }

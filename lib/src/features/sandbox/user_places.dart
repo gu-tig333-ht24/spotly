@@ -41,7 +41,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/models/place.dart';
 import 'dart:io';
 
-import '../../core/models/place_location.dart';
+import '../../core/models/location.dart';
 
 class UserPlacesNotifier extends StateNotifier<List<Place>> {
   UserPlacesNotifier() : super([]) {
@@ -57,7 +57,7 @@ class UserPlacesNotifier extends StateNotifier<List<Place>> {
       final placeParts = placeData.split('|');
 
       // Skapa en standardplats om ingen platsdata finns
-      final placeLocation = PlaceLocation(
+      final placeLocation = Location(
         latitude: 0.0, // Ange default-värden om ingen plats är sparad
         longitude: 0.0,
         address: 'No address available',

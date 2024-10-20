@@ -1,3 +1,5 @@
+import 'location_entity.dart';
+
 class PlaceEntity {
   PlaceEntity({
     required this.id,
@@ -6,9 +8,13 @@ class PlaceEntity {
     required this.imagePath,
     required this.description,
     required this.createdAt,
+    this.location,
   });
 
-  factory PlaceEntity.fromMap(Map<String, dynamic> map) {
+  factory PlaceEntity.fromMap(
+    Map<String, dynamic> map,
+    LocationEntity? location,
+  ) {
     return PlaceEntity(
       id: map.containsKey("id") ? map["id"] as int? : null,
       collectionId:
@@ -21,6 +27,7 @@ class PlaceEntity {
       createdAt: map.containsKey("createdAt")
           ? DateTime.tryParse(map["createdAt"]) ?? DateTime.now()
           : DateTime.now(),
+      location: location,
     );
   }
 
@@ -30,6 +37,7 @@ class PlaceEntity {
   final String? imagePath;
   final String? description;
   final DateTime createdAt;
+  final LocationEntity? location;
 
   Map<String, dynamic> toMap() {
     return {
@@ -39,6 +47,7 @@ class PlaceEntity {
       "imagePath": imagePath,
       "description": description,
       "createdAt": createdAt.toIso8601String(),
+      "locationId": location?.id,
     };
   }
 
@@ -49,6 +58,7 @@ class PlaceEntity {
     String? imagePath,
     String? description,
     DateTime? createdAt,
+    LocationEntity? location,
   }) {
     return PlaceEntity(
       id: id ?? this.id,
@@ -57,6 +67,7 @@ class PlaceEntity {
       imagePath: imagePath ?? this.imagePath,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
+      location: location ?? this.location,
     );
   }
 }
