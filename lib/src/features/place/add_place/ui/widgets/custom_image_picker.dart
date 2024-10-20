@@ -28,6 +28,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(
       source: ImageSource.gallery,
+      imageQuality: 24
     );
     if (pickedImage == null) {
       return;
@@ -43,6 +44,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(
       source: ImageSource.camera,
+      imageQuality: 25,
       maxWidth: 600,
     );
     if (pickedImage == null) {

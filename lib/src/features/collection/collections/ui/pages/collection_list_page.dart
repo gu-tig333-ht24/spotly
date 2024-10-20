@@ -22,9 +22,13 @@ class CollectionListPage extends StatelessWidget {
       appBar: CustomAppBar(
         appBarTitle: "Collections",
         actions: [
-          CustomIconButton(
-            onPressed: () => _navigateToAddCollectionPage(context),
-            icon: Icons.add_rounded,
+          Tooltip(
+            message: "Add a Collection",
+            preferBelow: true,
+            child: CustomIconButton(
+              onPressed: () => _navigateToAddCollectionPage(context),
+              icon: Icons.add_rounded,
+            ),
           ),
         ],
       ),

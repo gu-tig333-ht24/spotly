@@ -26,6 +26,11 @@ dependencies:
   sqflite: ^2.4.0
   path: ^1.9.0
 
+  # Share & Import
+  share_plus: ^10.1.0
+  device_info_plus: ^11.1.0
+  file_picker: ^8.1.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
