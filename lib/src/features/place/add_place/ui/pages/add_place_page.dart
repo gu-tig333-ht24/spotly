@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
 import '../../../../../core/widgets/custom_icon_button.dart';
 import '../../../places/providers/place_list_provider.dart';
@@ -22,15 +21,20 @@ class AddPlacePage extends ConsumerWidget {
     WidgetRef ref,
     AddPlaceFormState formState,
   ) {
-    final place = Place(
-      id: -1,
-      collectionId: collectionId,
-      title: formState.title,
-      description: formState.description,
-      imagePath: formState.imagePath,
-      createdAt: DateTime.now(),
-    );
-    ref.read(placeListProvider.notifier).addPlace(place);
+    // TODO: uncomment if location should be mandatory.
+    // if (formState.location == null) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text("Please select a location."),
+    //     ),
+    //   );
+    //   return;
+    // }
+
+    ref
+        .read(placeListProvider.notifier)
+        .addPlaceFromFormState(formState, collectionId);
+
     Navigator.of(context).pop();
   }
 
