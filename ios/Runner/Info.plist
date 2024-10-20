@@ -49,5 +49,8 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- !: Geolocator requirement. -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location to get current location.</string>
 </dict>
 </plist>

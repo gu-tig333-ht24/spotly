@@ -23,13 +23,14 @@ class CollectionListTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: collection.description.isNotEmpty
-          ? Text(
-              collection.description,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          : null,
+      subtitle:
+          collection.description != null && collection.description!.isNotEmpty
+              ? Text(
+                  collection.description!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
+              : null,
       trailing: const Icon(
         Icons.chevron_right,
         color: Colors.white54,

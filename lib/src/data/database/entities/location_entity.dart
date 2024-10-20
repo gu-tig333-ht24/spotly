@@ -11,14 +11,14 @@ class LocationEntity {
       id: map["id"] as int?,
       latitude: map["latitude"] as double,
       longitude: map["longitude"] as double,
-      address: map["address"] as String,
+      address: map["address"] as String?,
     );
   }
 
   final int? id;
   final double latitude;
   final double longitude;
-  final String address;
+  final String? address;
 
   Map<String, dynamic> toMap() => {
         "id": id,

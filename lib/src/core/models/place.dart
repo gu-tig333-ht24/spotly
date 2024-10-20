@@ -23,7 +23,9 @@ class Place {
       createdAt: map.containsKey("createdAt")
           ? DateTime.tryParse(map["createdAt"]) ?? DateTime.now()
           : DateTime.now(),
-      location: map["location"] as Location?,
+      location: map.containsKey("location")
+          ? Location.fromMap(map["location"])
+          : null,
     );
   }
 
@@ -44,7 +46,7 @@ class Place {
       "imagePath": imagePath,
       "description": description,
       "createdAt": createdAt.toIso8601String(),
-      "location": location,
+      "location": location?.toMap(),
     };
   }
 

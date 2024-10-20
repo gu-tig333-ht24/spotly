@@ -19,7 +19,7 @@ class Collection {
 
   final int id;
   final String title;
-  final String description;
+  final String? description;
   final DateTime createdAt;
 
   Map<String, dynamic> toJson() {

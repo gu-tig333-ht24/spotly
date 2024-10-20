@@ -29,11 +29,11 @@ class AddCollectionFormState {
 
   factory AddCollectionFormState.initial() => const AddCollectionFormState(
         title: "",
-        description: "",
+        description: null,
       );
 
   final String title;
-  final String description;
+  final String? description;
 
   bool get isValid => title.isNotEmpty;
 

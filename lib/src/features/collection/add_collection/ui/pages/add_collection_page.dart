@@ -14,7 +14,7 @@ class AddCollectionPage extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
-    String description,
+    String? description,
   ) {
     ref.read(collectionListProvider.notifier).addCollection(title, description);
     Navigator.of(context).pop();

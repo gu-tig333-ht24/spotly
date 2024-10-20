@@ -54,7 +54,7 @@ class AddPlaceFormState {
       );
 
   final String title;
-  final String description;
+  final String? description;
   final String? imagePath;
   final Location? location;
 
