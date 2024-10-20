@@ -24,18 +24,30 @@ class _AddCollectionFormState extends ConsumerState<AddCollectionForm> {
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
 
+  late final FocusNode _titleNode;
+  late final FocusNode _descriptionNode;
+
   @override
   void initState() {
     super.initState();
+
     _formController = ref.read(addCollectionFormProvider.notifier);
+
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
+
+    _titleNode = FocusNode();
+    _descriptionNode = FocusNode();
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+
+    _titleNode.dispose();
+    _descriptionNode.dispose();
+
     super.dispose();
   }
 
@@ -53,18 +65,28 @@ class _AddCollectionFormState extends ConsumerState<AddCollectionForm> {
             CustomTextFormField(
               controller: _titleController,
               labelText: "Title",
-              isRequired: true,
               onChanged: _formController.changeTitle,
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).requestFocus(_descriptionNode);
+              },
+              focusNode: _titleNode,
+              textInputAction: TextInputAction.next,
+              isRequired: true,
             ),
             const SizedBox(height: AppSizes.s20),
             CustomTextFormField(
               controller: _descriptionController,
               labelText: "Description",
+              onChanged: _formController.changeDescription,
+              onFieldSubmitted: (_) {
+                if (formState.isValid) {
+                  widget.onSubmit?.call();
+                }
+              },
+              focusNode: _descriptionNode,
+              textInputAction: TextInputAction.done,
               hasClearButton: false,
               maxLines: 3,
-              onChanged: _formController.changeDescription,
-              onSubmit: () =>
-                  formState.isValid ? widget.onSubmit?.call() : null,
             ),
             const SizedBox(height: AppSizes.s20),
             Row(

@@ -7,7 +7,9 @@ class CustomTextFormField extends StatelessWidget {
     required this.controller,
     required this.labelText,
     required this.onChanged,
-    this.onSubmit,
+    this.onFieldSubmitted,
+    this.focusNode,
+    this.textInputAction,
     this.isRequired = false,
     this.hasClearButton = false,
     this.maxLines = 1,
@@ -16,7 +18,9 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final Function(String) onChanged;
-  final VoidCallback? onSubmit;
+  final Function(String)? onFieldSubmitted;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
   final bool isRequired;
   final bool hasClearButton;
   final int maxLines;
@@ -26,14 +30,14 @@ class CustomTextFormField extends StatelessWidget {
     final theme = Theme.of(context);
 
     return TextFormField(
+      controller: controller,
       onChanged: (_) => onChanged(controller.text),
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-      onFieldSubmitted: (_) => onSubmit,
-      controller: controller,
+      onFieldSubmitted: onFieldSubmitted,
       cursorColor: theme.colorScheme.primary,
       keyboardType: TextInputType.text,
-      textCapitalization: TextCapitalization.none,
-      textInputAction: TextInputAction.done,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: textInputAction,
       maxLines: maxLines,
       // Customize the input text style
       style: TextStyle(color: theme.colorScheme.onSurface),
