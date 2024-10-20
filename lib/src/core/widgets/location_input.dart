@@ -394,10 +394,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 //import '../models/place.dart';
-import '../models/place_location.dart'; // För PlaceLocation
+import '../models/location.dart'; // För PlaceLocation
 
 class LocationInput extends StatefulWidget {
-  final Function(PlaceLocation)
+  final Function(Location)
       onSelectLocation; // Callback för att skicka platsdata
 
   const LocationInput({super.key, required this.onSelectLocation});
@@ -409,7 +409,7 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  PlaceLocation? _pickedLocation;
+  Location? _pickedLocation;
   var _isGettingLocation = false;
 
   String get locationImage {
@@ -469,13 +469,13 @@ class _LocationInputState extends State<LocationInput> {
 
     setState(() {
       _pickedLocation =
-          PlaceLocation(latitude: lat, longitude: lng, address: address);
+          Location(latitude: lat, longitude: lng, address: address);
       _isGettingLocation = false;
     });
 
     // Skicka tillbaka platsen till AddPlaceScreen
     widget.onSelectLocation(
-      PlaceLocation(latitude: lat, longitude: lng, address: address),
+      Location(latitude: lat, longitude: lng, address: address),
     );
   }
 
