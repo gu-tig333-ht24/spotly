@@ -33,12 +33,6 @@ class LocationDetails extends StatelessWidget {
           label: "Longitude",
           text: location.longitude.toString(),
         ),
-        const SizedBox(height: AppSizes.s4),
-        if (location.address != null)
-          LocationRichText(
-            label: "Address",
-            text: location.address!,
-          ),
       ],
     );
   }
