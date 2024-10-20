@@ -103,7 +103,7 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
               _formController.changeImagePath(file.path);
               _formController.changeSelectedImageFile(file);
             }),
-            LocationInput(onSelectLocation: _selectPlaceLocation),
+            LocationInput(onLocationSelected: _selectPlaceLocation),
           ],
         ),
       ),
