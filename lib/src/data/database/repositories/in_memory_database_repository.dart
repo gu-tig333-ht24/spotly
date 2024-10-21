@@ -12,8 +12,7 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
   // region Collections
 
   @override
-  Future<CollectionEntity> createCollection(
-      CollectionEntity entity) {
+  Future<CollectionEntity> createCollection(CollectionEntity entity) {
     _currentCollectionId += 1;
     entity = entity.copyWith(id: _currentCollectionId);
     _collections.add(entity);
@@ -21,14 +20,12 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<List<CollectionEntity>> retrieveCollections() =>
-      Future.value(
+  Future<List<CollectionEntity>> retrieveCollections() => Future.value(
         List.unmodifiable(_collections),
       );
 
   @override
-  Future<CollectionEntity?> retrieveCollectionById(int id) =>
-      Future.value(
+  Future<CollectionEntity?> retrieveCollectionById(int id) => Future.value(
         _collections.where((entity) => entity.id == id).firstOrNull,
       );
 
@@ -112,6 +109,19 @@ class InMemoryDatabaseRepository implements DatabaseRepository {
     return Future.value(
       _places.remove(_places[index]),
     );
+  }
+
+  @override
+  Future<List<PlaceEntity>> searchPlaces(String searchText) {
+    final results = _places
+        .where((e) =>
+            e.title.contains(searchText) ||
+            (e.description != null && e.description!.contains(searchText)) ||
+            (e.location != null &&
+                e.location!.address != null &&
+                e.location!.address!.contains(searchText)))
+        .toList();
+    return Future.value(results);
   }
 
 // endregion
