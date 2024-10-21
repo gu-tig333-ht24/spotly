@@ -10,24 +10,31 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/models/place.dart';
 import '../../../../data/providers/database_providers.dart';
 import '../../../../data/services/database_service.dart';
+import '../../../../data/services/place_service.dart';
 import '../../add_place/providers/add_place_form_provider.dart';
 
 final placeListProvider = StateNotifierProvider.autoDispose<PlaceListController,
     AsyncValue<List<Place>>>((ref) {
-  final DatabaseService service = ref.read(databaseServiceProvider);
-  return PlaceListController(databaseService: service);
+  final DatabaseService databaseService = ref.read(databaseServiceProvider);
+  final PlaceService placeService =
+      PlaceService(databaseService: databaseService);
+  return PlaceListController(
+    databaseService: databaseService,
+    placeService: placeService,
+  );
 });
 
 class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
   PlaceListController({
     required DatabaseService databaseService,
+    required PlaceService placeService,
   })  : _databaseService = databaseService,
+        _placeService = placeService,
         super(const AsyncValue.data([]));
 
   final DatabaseService _databaseService;
+  final PlaceService _placeService;
 
-  // TODO: _writeFileToStorage & _deleteFileFromStorage can be extracted out
-  //       to its own service and provider.
   Future<String?> _writeFileToStorage(File file) async {
     try {
       final filePath = file.path;
@@ -44,28 +51,6 @@ class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
         print("⚠️ -> Failed to create file. Error: $e");
       }
       return null;
-    }
-  }
-
-  Future<void> _deleteFileFromStorage(String filePath) async {
-    final file = File(filePath);
-
-    if (!await file.exists()) {
-      if (kDebugMode) {
-        print("ℹ️ -> File does not exist: $filePath");
-      }
-      return;
-    }
-
-    try {
-      await file.delete();
-      if (kDebugMode) {
-        print("✅ -> File deleted: $filePath");
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print("⚠️ -> Failed to delete file. Error: $e");
-      }
     }
   }
 
@@ -126,13 +111,9 @@ class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
   }
 
   Future<void> deletePlace(Place place) async {
-    final deleted = await _databaseService.deletePlaceById(place.id);
+    final deleted = await _placeService.deletePlace(place);
     if (!deleted) {
       return;
-    }
-
-    if (place.imagePath != null) {
-      await _deleteFileFromStorage(place.imagePath!);
     }
 
     final List<Place> currentPlaces = List.from(state.value ?? []);
@@ -143,7 +124,7 @@ class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
     } catch (e, st) {
       state = AsyncError(e, st);
       if (kDebugMode) {
-        debugPrint("❌ -> addPlace(), error: $e");
+        debugPrint("❌ -> deletePlace(), error: $e");
       }
     }
   }
