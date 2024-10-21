@@ -6,7 +6,7 @@ import '../../../../core/models/place.dart';
 import '../../../../core/widgets/centered_error_text.dart';
 import '../../../../core/widgets/centered_progress_indicator.dart';
 import '../../providers/place_search_provider.dart';
-import 'place_list.dart';
+import '../../../shared/ui/widgets/place_list.dart';
 
 class SearchListView extends ConsumerStatefulWidget {
   const SearchListView({super.key});
@@ -31,7 +31,9 @@ class _SearchListViewState extends ConsumerState<SearchListView> {
       data: (List<Place> places) {
         return PlaceList(
           places: places,
-          onDelete: (Place placeToDelete) {},
+          onDelete: (Place placeToDelete) {
+            ref.read(placeSearchProvider.notifier).deletePlace(placeToDelete);
+          },
         );
       },
       loading: () => const CenteredProgressIndicator(),
