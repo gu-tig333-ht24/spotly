@@ -28,5 +28,7 @@ abstract interface class DatabaseRepository {
 
   Future<bool> deletePlaceById(int id);
 
+  Future<List<PlaceEntity>> searchPlaces(String searchText);
+
 // endregion
 }

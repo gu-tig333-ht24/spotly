@@ -204,27 +204,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
     WHERE $_placesTable.collectionId = ?
   """, [collectionId]);
 
-    return results.map((Map<String, Object?> row) {
-      LocationEntity? location;
-      if (row["locationId"] != null) {
-        location = LocationEntity(
-          id: row["locationId"] as int?,
-          latitude: row["latitude"] as double,
-          longitude: row["longitude"] as double,
-          address: row["address"] as String?,
-        );
-      }
-
-      return PlaceEntity(
-        id: row["id"] as int?,
-        collectionId: row["collectionId"] as int,
-        title: row["title"] as String,
-        description: row["description"] as String,
-        imagePath: row["imagePath"] as String?,
-        createdAt: DateTime.parse(row["createdAt"] as String),
-        location: location,
-      );
-    }).toList();
+    return _resultsToEntities(results);
   }
 
   @override
@@ -293,6 +273,66 @@ class SqliteDatabaseRepository implements DatabaseRepository {
     );
     return rowsDeleted > 0;
   }
+
+  @override
+  Future<List<PlaceEntity>> searchPlaces(String searchText) async {
+    final db = await database;
+
+    const query = """
+    SELECT 
+      $_placesTable.id AS id,
+      $_placesTable.collectionId AS collectionId,
+      $_placesTable.title AS title,
+      $_placesTable.description AS description,
+      $_placesTable.imagePath AS imagePath,
+      $_placesTable.createdAt AS createdAt,
+      $_locationsTable.id AS locationId,
+      $_locationsTable.latitude AS latitude,
+      $_locationsTable.longitude AS longitude,
+      $_locationsTable.address AS address
+    FROM $_placesTable
+    LEFT JOIN $_locationsTable 
+      ON $_placesTable.locationId = $_locationsTable.id
+    WHERE 
+      $_placesTable.title LIKE ? OR
+      $_placesTable.description LIKE ? OR
+      $_locationsTable.address LIKE ?
+  """;
+
+    // !: Source: https://www.w3schools.com/sql/sql_like.asp
+    // The "%" wildcard is used to match any substring.
+    final searchPattern = "%$searchText%";
+
+    final List<Map<String, Object?>> results = await db.rawQuery(
+      query,
+      [searchPattern, searchPattern, searchPattern],
+    );
+
+    return _resultsToEntities(results);
+  }
+
+  List<PlaceEntity> _resultsToEntities(List<Map<String, Object?>> results) =>
+      results.map((Map<String, Object?> row) {
+        LocationEntity? location;
+        if (row["locationId"] != null) {
+          location = LocationEntity(
+            id: row["locationId"] as int?,
+            latitude: row["latitude"] as double,
+            longitude: row["longitude"] as double,
+            address: row["address"] as String?,
+          );
+        }
+
+        return PlaceEntity(
+          id: row["id"] as int?,
+          collectionId: row["collectionId"] as int,
+          title: row["title"] as String,
+          description: row["description"] as String,
+          imagePath: row["imagePath"] as String?,
+          createdAt: DateTime.parse(row["createdAt"] as String),
+          location: location,
+        );
+      }).toList();
 
 // endregion
 }
