@@ -113,5 +113,16 @@ class DatabaseService {
 
   Future<bool> deletePlaceById(int id) => _repository.deletePlaceById(id);
 
+  Future<List<Place>> searchPlaces(String searchText) async {
+    final List<PlaceEntity> entities =
+        await _repository.searchPlaces(searchText);
+    return entities
+        .map<Place?>(
+          (entity) => entity.id == null ? null : entity.toModel(id: entity.id!),
+    )
+        .whereType<Place>()
+        .toList();
+  }
+
 // endregion
 }
