@@ -5,6 +5,7 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 
 import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/centered_error_text.dart';
+import '../../../../../core/widgets/centered_placeholder_text.dart';
 import '../../../../../core/widgets/centered_progress_indicator.dart';
 import '../../../../share/providers/share_provider.dart';
 import '../../../../share/services/share_service.dart';
@@ -46,14 +47,8 @@ class _PlaceListViewState extends ConsumerState<PlaceListView> {
     return placeValue.when(
       data: (List<Place> places) {
         if (places.isEmpty) {
-          return const Center(
-            child: Text(
-              "No places available.",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 24,
-              ),
-            ),
+          return const CenteredPlaceholderText(
+            text: "No places available.",
           );
         }
 
