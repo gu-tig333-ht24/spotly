@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../features/place/place_detail/ui/pages/map_page.dart';
+import '../constants/app_sizes.dart';
 import '../models/location.dart';
 
 class LocationInput extends StatefulWidget {
@@ -227,9 +228,9 @@ class _LocationInputState extends State<LocationInput> {
           ),
           child: previewContent,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: AppSizes.s10),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton.icon(
               icon: const Icon(Icons.location_on),

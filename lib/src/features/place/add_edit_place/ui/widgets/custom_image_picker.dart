@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../core/constants/app_sizes.dart';
 import 'image_content_view.dart';
 
 class CustomImagePicker extends StatefulWidget {
@@ -101,6 +102,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
             imageFile: _selectedImageFile,
           ),
         ),
+        const SizedBox(height: AppSizes.s10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -108,10 +110,6 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               onPressed: _pickImageFromGallery,
               icon: const Icon(Icons.photo_album_rounded),
               label: const Text("Pick Image"),
-            ),
-            const Text(
-              "or",
-              style: TextStyle(color: Colors.white70),
             ),
             TextButton.icon(
               onPressed: _takePictureWithCamera,

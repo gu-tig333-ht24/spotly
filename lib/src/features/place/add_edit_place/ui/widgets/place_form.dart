@@ -115,7 +115,7 @@ class _PlaceFormState extends ConsumerState<PlaceForm> {
               focusNode: _descriptionNode,
               textInputAction: TextInputAction.done,
               hasClearButton: false,
-              maxLines: 3,
+              maxLines: 2,
             ),
             const SizedBox(height: AppSizes.s20),
             CustomImagePicker(
@@ -127,6 +127,7 @@ class _PlaceFormState extends ConsumerState<PlaceForm> {
                   _formController.changeImagePath(file.path);
                   _formController.changeSelectedImageFile(file);
                 }),
+            const SizedBox(height: AppSizes.s10),
             LocationInput(
               initialSelection: widget.place?.location,
               onLocationSelected: _selectPlaceLocation,
