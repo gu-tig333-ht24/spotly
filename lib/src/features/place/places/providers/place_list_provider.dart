@@ -7,11 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../core/models/location.dart';
 import '../../../../core/models/place.dart';
 import '../../../../data/providers/database_providers.dart';
 import '../../../../data/services/database_service.dart';
 import '../../../../data/services/place_service.dart';
-import '../../add_place/providers/add_place_form_provider.dart';
+import '../../add_edit_place/providers/place_form_provider.dart';
 
 final placeListProvider = StateNotifierProvider.autoDispose<PlaceListController,
     AsyncValue<List<Place>>>((ref) {
@@ -55,7 +56,7 @@ class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
   }
 
   Future<void> addPlaceFromFormState(
-    AddPlaceFormState formState,
+    PlaceFormState formState,
     int collectionId,
   ) async {
     String? imagePath;
@@ -106,6 +107,61 @@ class PlaceListController extends StateNotifier<AsyncValue<List<Place>>> {
 
       if (kDebugMode) {
         debugPrint("❌ -> retrievePlaces(), error: $e");
+      }
+    }
+  }
+
+  Future<void> updatePlaceFromFormState(
+    Place place,
+    PlaceFormState formState,
+  ) async {
+    String? oldImagePath = place.imagePath;
+    String? newImagePath = formState.selectedImageFile?.path;
+
+    if (newImagePath != null && newImagePath != oldImagePath) {
+      if (oldImagePath != null) {
+        // Remove old file.
+        await _placeService.deleteFileFromStorage(oldImagePath);
+      }
+
+      newImagePath = await _writeFileToStorage(formState.selectedImageFile!);
+    }
+
+    Location? location;
+    if (place.location != formState.location) {
+      location = formState.location;
+    }
+
+    final updatedPlace = place.copyWith(
+      title: formState.title,
+      description: formState.description,
+      imagePath: newImagePath,
+      location: location,
+    );
+
+    final updated = await _databaseService.updatePlace(updatedPlace);
+    if (!updated) {
+      return;
+    }
+
+    final List<Place> currentPlaces = List.from(
+      state.value ?? [],
+    );
+
+    final index = currentPlaces.indexWhere((p) => p.id == updatedPlace.id);
+    if (index == -1) {
+      return;
+    }
+
+    currentPlaces[index] = updatedPlace;
+
+    try {
+      state = AsyncData(currentPlaces);
+    } catch (e, st) {
+      state = AsyncError(e, st);
+
+      if (kDebugMode) {
+        debugPrint("❌ -> updatePlaceFromFormState(), error: $e");
       }
     }
   }

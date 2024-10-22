@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/models/collection.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
 import '../../../../../core/widgets/custom_icon_button.dart';
-import '../../../add_place/ui/pages/add_place_page.dart';
+import '../../../add_edit_place/ui/pages/add_place_page.dart';
 import '../../providers/place_list_provider.dart';
 import '../widgets/place_list_view.dart';
 

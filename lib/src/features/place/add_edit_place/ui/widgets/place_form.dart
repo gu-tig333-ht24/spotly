@@ -6,25 +6,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/location.dart';
+import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../core/widgets/location_input.dart';
-import '../../providers/add_place_form_provider.dart';
+import '../../providers/place_form_provider.dart';
 import 'custom_image_picker.dart';
 
-class AddPlaceForm extends ConsumerStatefulWidget {
-  const AddPlaceForm({
+class PlaceForm extends ConsumerStatefulWidget {
+  const PlaceForm({
     super.key,
     required this.onSubmit,
+    this.place,
   });
 
   final VoidCallback onSubmit;
+  final Place? place;
 
   @override
-  ConsumerState<AddPlaceForm> createState() => _AddPlaceFormState();
+  ConsumerState<PlaceForm> createState() => _PlaceFormState();
 }
 
-class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
-  late final AddPlaceFormController _formController;
+class _PlaceFormState extends ConsumerState<PlaceForm> {
+  late final PlaceFormController _formController;
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
 
@@ -37,13 +40,29 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
   void initState() {
     super.initState();
 
-    _formController = ref.read(addPlaceFormProvider.notifier);
+    _formController = ref.read(placeFormProvider.notifier);
 
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
 
     _titleNode = FocusNode();
     _descriptionNode = FocusNode();
+
+    if (widget.place == null) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeForm(widget.place!);
+    });
+  }
+
+  void _initializeForm(Place place) {
+    _titleController.text = place.title;
+    _formController.changeTitle(_titleController.text);
+
+    _descriptionController.text = place.description ?? "";
+    _formController.changeDescription(_descriptionController.text);
   }
 
   @override
@@ -64,7 +83,7 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
 
   @override
   Widget build(BuildContext context) {
-    final AddPlaceFormState formState = ref.watch(addPlaceFormProvider);
+    final PlaceFormState formState = ref.watch(placeFormProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSizes.s20),
@@ -99,11 +118,19 @@ class _AddPlaceFormState extends ConsumerState<AddPlaceForm> {
               maxLines: 3,
             ),
             const SizedBox(height: AppSizes.s20),
-            CustomImagePicker(onImageSelected: (File file) {
-              _formController.changeImagePath(file.path);
-              _formController.changeSelectedImageFile(file);
-            }),
-            LocationInput(onLocationSelected: _selectPlaceLocation),
+            CustomImagePicker(
+                initialSelection: widget.place?.imagePath != null
+                    ? File(widget.place!.imagePath!)
+                    : null,
+                onImageSelected: (File file) {
+                  // TODO: do we really need imagePath if we have the file?
+                  _formController.changeImagePath(file.path);
+                  _formController.changeSelectedImageFile(file);
+                }),
+            LocationInput(
+              initialSelection: widget.place?.location,
+              onLocationSelected: _selectPlaceLocation,
+            ),
           ],
         ),
       ),

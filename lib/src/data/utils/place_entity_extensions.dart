@@ -10,6 +10,6 @@ extension PlaceEntityExtensions on PlaceEntity {
         imagePath: imagePath,
         description: description,
         createdAt: createdAt,
-        location: location?.toModel(),
+        location: location?.toModel(id: location?.id ?? -1),
       );
 }

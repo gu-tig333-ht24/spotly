@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -245,14 +247,49 @@ class SqliteDatabaseRepository implements DatabaseRepository {
   @override
   Future<bool> updatePlace(PlaceEntity entity) async {
     final db = await database;
+    final batch = db.batch();
 
-    final rowsUpdated = await db.update(
+    // Determine if location should be inserted or updated.
+    if (entity.location != null) {
+      if (entity.location!.id == null) {
+        // Location should be inserted.
+        final locationId = await db.insert(
+          _locationsTable,
+          entity.location!.toMap(),
+        );
+
+        entity = entity.copyWith(
+          location: entity.location!.copyWith(id: locationId),
+        );
+      } else {
+        // Location should be updated.
+        batch.update(
+          _locationsTable,
+          entity.location!.toMap(),
+          where: "id = ?",
+          whereArgs: [entity.location!.id],
+        );
+      }
+    }
+
+    // Update the place.
+    batch.update(
       _placesTable,
       entity.toMap(),
       where: "id = ?",
       whereArgs: [entity.id],
     );
-    return rowsUpdated > 0;
+
+    try {
+      // We use batch to make sure that all operations succeed or none do.
+      await batch.commit();
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint("❌ -> database.updatePlace(), error: $e");
+      }
+      return false;
+    }
   }
 
   @override

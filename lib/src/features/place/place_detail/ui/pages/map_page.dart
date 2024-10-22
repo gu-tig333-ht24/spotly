@@ -9,6 +9,7 @@ class MapPage extends StatefulWidget {
   const MapPage({
     super.key,
     this.location = const Location(
+      id: -1,
       latitude: 37.422,
       longitude: -122.084,
       address: '',
