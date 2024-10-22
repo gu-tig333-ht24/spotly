@@ -4,14 +4,14 @@ import '../constants/app_constants.dart';
 import '../constants/app_sizes.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String appBarTitle;
-  final List<Widget>? actions;
-
   const CustomAppBar({
     super.key,
     this.appBarTitle = AppConstants.appTitle,
     this.actions,
   });
+
+  final String appBarTitle;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
