@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/collection.dart';
-import '../../../../../core/theme/app_theme.dart';
 
 class CollectionListTile extends StatelessWidget {
   const CollectionListTile({
@@ -18,11 +17,14 @@ class CollectionListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      tileColor: Colors.teal.shade900,
       title: Text(
         collection.title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
       ),
       subtitle:
           collection.description != null && collection.description!.isNotEmpty
@@ -30,6 +32,13 @@ class CollectionListTile extends StatelessWidget {
                   collection.description!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.9),
+                      ),
                 )
               : null,
       trailing: const Icon(

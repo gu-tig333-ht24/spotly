@@ -75,7 +75,7 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
     final CollectionFormState formState = ref.watch(collectionFormProvider);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
+      padding: const EdgeInsets.all(AppSizes.s20),
       child: Form(
         child: Column(
           children: [

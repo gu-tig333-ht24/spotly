@@ -13,8 +13,8 @@ class CenteredPlaceholderText extends StatelessWidget {
     return Center(
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.white70,
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
           fontSize: 24,
         ),
       ),

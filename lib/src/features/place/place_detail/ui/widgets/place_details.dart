@@ -26,14 +26,15 @@ class PlaceDetails extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: AppSizes.s10),
-        Text(
-          place.description != null ? place.description! : "",
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-        ),
+        if (place.description != null && place.description!.isNotEmpty)
+          Text(
+            place.description!,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
         const SizedBox(height: AppSizes.s10),
         Text(
           "Created on: ${place.createdAt.toLocal().friendlyFormat}",

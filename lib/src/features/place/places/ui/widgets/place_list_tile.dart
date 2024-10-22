@@ -17,7 +17,6 @@ class PlaceListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      tileColor: Colors.teal.shade900,
       title: Row(
         children: [
           Column(
@@ -25,15 +24,12 @@ class PlaceListTile extends StatelessWidget {
             children: [
               Icon(
                 Icons.image_rounded,
-                color: place.imagePath == null
-                    ? Colors.grey
-                    : Colors.teal.shade400,
+                color: place.imagePath == null ? Colors.teal.shade700 : null,
               ),
               const SizedBox(height: AppSizes.s4),
               Icon(
                 Icons.location_on_rounded,
-                color:
-                    place.location == null ? Colors.grey : Colors.teal.shade400,
+                color: place.location == null ? Colors.teal.shade700 : null,
               ),
             ],
           ),
@@ -45,6 +41,10 @@ class PlaceListTile extends StatelessWidget {
                 place.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
               ),
               if (place.description != null &&
                   place.description!.isNotEmpty) ...[
@@ -53,6 +53,13 @@ class PlaceListTile extends StatelessWidget {
                   place.description!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.9),
+                      ),
                 ),
               ],
             ],

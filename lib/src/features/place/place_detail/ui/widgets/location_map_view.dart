@@ -28,19 +28,9 @@ class LocationMapView extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 16,
-          ),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.transparent,
-                Colors.black54,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+          padding: const EdgeInsets.all(AppSizes.s20),
+          decoration: BoxDecoration(
+            color: kInteractiveColor.withOpacity(0.5),
           ),
           child: Text(
             location.address ?? "",

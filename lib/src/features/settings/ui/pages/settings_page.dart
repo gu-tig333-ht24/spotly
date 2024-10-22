@@ -31,6 +31,7 @@ class SettingsPage extends ConsumerWidget {
           // Dark mode toggle switch
           SwitchListTile(
             title: const Text("Dark Mode"),
+            tileColor: Colors.transparent,
             value: isDarkMode, // current value from provider
             onChanged: (bool value) {
               ref.read(darkModeProvider.notifier).toggleDarkMode();
@@ -41,6 +42,7 @@ class SettingsPage extends ConsumerWidget {
           // Notifications toggle switch
           SwitchListTile(
             title: const Text("Enable Notifications"),
+            tileColor: Colors.transparent,
             value: settings.notificationsEnabled,
             onChanged: (bool value) {
               ref.read(settingsProvider.notifier).toggleNotifications(value);
@@ -51,6 +53,7 @@ class SettingsPage extends ConsumerWidget {
           // Privacy and Security
           ListTile(
             title: const Text("Privacy and Security"),
+            tileColor: Colors.transparent,
             onTap: () {
               Navigator.push(
                 context,
@@ -64,6 +67,7 @@ class SettingsPage extends ConsumerWidget {
           // Help and Support
           ListTile(
             title: const Text("Help and Support"),
+            tileColor: Colors.transparent,
             onTap: () {
               Navigator.push(
                 context,
@@ -77,6 +81,7 @@ class SettingsPage extends ConsumerWidget {
           // Contact Us
           ListTile(
             title: const Text("Contact Us"),
+            tileColor: Colors.transparent,
             onTap: () {
               Navigator.push(
                 context,
@@ -88,7 +93,8 @@ class SettingsPage extends ConsumerWidget {
 
           // About
           ListTile(
-            title: const Text('About'),
+            title: const Text("About"),
+            tileColor: Colors.transparent,
             onTap: () {
               Navigator.push(
                 context,

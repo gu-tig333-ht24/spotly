@@ -50,6 +50,7 @@ class LocationDetails extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
             ),
+            const SizedBox(width: AppSizes.s20),
             Tooltip(
               message: "Launch in ${Platform.isIOS ? "Apple" : "Google"} Maps",
               preferBelow: true,

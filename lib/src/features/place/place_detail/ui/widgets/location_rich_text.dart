@@ -19,9 +19,16 @@ class LocationRichText extends StatelessWidget {
         children: [
           TextSpan(
             text: "$label: ",
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          TextSpan(text: text),
+          TextSpan(
+              text: text,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  )),
         ],
       ),
     );

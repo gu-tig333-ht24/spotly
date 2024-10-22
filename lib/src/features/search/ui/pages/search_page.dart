@@ -19,11 +19,7 @@ class SearchPage extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(
-              left: AppSizes.s20,
-              right: AppSizes.s20,
-              bottom: AppSizes.s20,
-            ),
+            padding: EdgeInsets.all(AppSizes.s20),
             child: CustomSearchBar(),
           ),
           Expanded(
