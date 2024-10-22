@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final addCollectionFormProvider = StateNotifierProvider.autoDispose<
-    AddCollectionFormController, AddCollectionFormState>((ref) {
-  return AddCollectionFormController();
+final collectionFormProvider = StateNotifierProvider.autoDispose<
+    CollectionFormController, CollectionFormState>((ref) {
+  return CollectionFormController();
 });
 
-class AddCollectionFormController
-    extends StateNotifier<AddCollectionFormState> {
-  AddCollectionFormController() : super(AddCollectionFormState.initial());
+class CollectionFormController
+    extends StateNotifier<CollectionFormState> {
+  CollectionFormController() : super(CollectionFormState.initial());
 
   void changeTitle(String newTitle) {
     state = state.copyWith(title: newTitle);
@@ -21,13 +21,13 @@ class AddCollectionFormController
 }
 
 @immutable
-class AddCollectionFormState {
-  const AddCollectionFormState({
+class CollectionFormState {
+  const CollectionFormState({
     required this.title,
     required this.description,
   });
 
-  factory AddCollectionFormState.initial() => const AddCollectionFormState(
+  factory CollectionFormState.initial() => const CollectionFormState(
         title: "",
         description: null,
       );
@@ -37,11 +37,11 @@ class AddCollectionFormState {
 
   bool get isValid => title.isNotEmpty;
 
-  AddCollectionFormState copyWith({
+  CollectionFormState copyWith({
     String? title,
     String? description,
   }) {
-    return AddCollectionFormState(
+    return CollectionFormState(
       title: title ?? this.title,
       description: description ?? this.description,
     );

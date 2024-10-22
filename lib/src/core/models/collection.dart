@@ -30,4 +30,18 @@ class Collection {
       "createdAt": createdAt,
     };
   }
+
+  Collection copyWith({
+    int? id,
+    String? title,
+    String? description,
+    DateTime? createdAt,
+  }) {
+    return Collection(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
