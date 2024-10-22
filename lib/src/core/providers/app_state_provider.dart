@@ -27,7 +27,7 @@ class AppState {
 
   factory AppState.initial() {
     return const AppState(
-      selectedTab: BottomTab.places,
+      selectedTab: BottomTab.collections,
     );
   }
 

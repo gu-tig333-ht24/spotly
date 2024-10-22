@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/location.dart';
+import '../../../../../core/theme/app_theme.dart';
 import '../../../../shared/ui/pages/map_page.dart';
 
 class LocationMapView extends StatelessWidget {
@@ -64,8 +65,12 @@ class LocationMapView extends StatelessWidget {
           child: Column(
             children: [
               CircleAvatar(
-                radius: 70,
-                backgroundImage: NetworkImage(locationImage),
+                radius: 75,
+                backgroundColor: kInteractiveColor,
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundImage: NetworkImage(locationImage),
+                ),
               ),
             ],
           ),

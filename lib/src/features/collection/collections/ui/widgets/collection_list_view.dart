@@ -95,7 +95,7 @@ class _CollectionListViewState extends ConsumerState<CollectionListView> {
                     }),
                 SwipeAction(
                     title: "Edit",
-                    color: Colors.deepPurpleAccent,
+                    color: Colors.teal.shade700,
                     onTap: (CompletionHandler handler) async {
                       handler(false);
                       _navigateToEditCollectionPage(context, collection);

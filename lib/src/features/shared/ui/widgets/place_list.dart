@@ -56,7 +56,7 @@ class PlaceList extends StatelessWidget {
             leadingActions: [
               SwipeAction(
                   title: "Share",
-                  color: Colors.deepPurpleAccent,
+                  color: Colors.teal.shade700,
                   onTap: (CompletionHandler handler) async {
                     handler(false);
 
@@ -75,14 +75,14 @@ class PlaceList extends StatelessWidget {
             trailingActions: [
               SwipeAction(
                   title: "Delete",
-                  color: Colors.red,
+                  color: Colors.red.shade900,
                   onTap: (CompletionHandler handler) async {
                     await handler(true);
                     onDelete(place);
                   }),
               SwipeAction(
                   title: "Edit",
-                  color: Colors.deepPurpleAccent,
+                  color: Colors.teal.shade700,
                   onTap: (CompletionHandler handler) async {
                     handler(false);
                     _navigateToEditPlacePage(context, place);

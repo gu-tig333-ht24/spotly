@@ -12,12 +12,18 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(
+        appBarTitle: "Search",
+      ),
       bottomNavigationBar: CustomNavigationBar(),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(AppSizes.s20),
+            padding: EdgeInsets.only(
+              left: AppSizes.s20,
+              right: AppSizes.s20,
+              bottom: AppSizes.s20,
+            ),
             child: CustomSearchBar(),
           ),
           Expanded(

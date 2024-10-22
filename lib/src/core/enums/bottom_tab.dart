@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
 enum BottomTab {
-  places,
+  collections,
   search,
   settings;
 
   factory BottomTab.fromIndex(int index) => switch (index) {
-        0 => places,
+        0 => collections,
         1 => search,
         _ => settings,
       };
 
   String get label => switch (this) {
-        BottomTab.places => "Places",
+        BottomTab.collections => "Collections",
         BottomTab.search => "Search",
         BottomTab.settings => "Settings",
       };
 
   IconData get icon => switch (this) {
-        BottomTab.places => Icons.place,
-        BottomTab.search => Icons.search,
-        BottomTab.settings => Icons.settings,
+        BottomTab.collections => Icons.place_rounded,
+        BottomTab.search => Icons.search_rounded,
+        BottomTab.settings => Icons.settings_rounded,
       };
 }

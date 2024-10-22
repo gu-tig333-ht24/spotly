@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+
+const kInteractiveColor = Colors.teal;
 
 class AppTheme {
   AppTheme._internal();
 
   static final darkColorScheme = ColorScheme.fromSeed(
     brightness: Brightness.dark,
-    seedColor: const Color.fromARGB(255, 102, 6, 247),
+    seedColor: kInteractiveColor,
   );
 
   static final lightColorScheme = ColorScheme.fromSeed(
     brightness: Brightness.light,
-    seedColor: const Color.fromARGB(255, 102, 6, 247),
+    seedColor: kInteractiveColor,
   );
 
   static ThemeData darkTheme = ThemeData().copyWith(
@@ -28,9 +31,9 @@ class AppTheme {
     scaffoldBackgroundColor: lightColorScheme.surface,
     colorScheme: lightColorScheme,
     textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
-      bodyLarge: TextStyle(color: Colors.black), // Black text for lightmode 
-      bodyMedium: TextStyle(color: Colors.black),
-      bodySmall: TextStyle(color: Colors.black),
+      bodyLarge: const TextStyle(color: Colors.black),
+      bodyMedium: const TextStyle(color: Colors.black),
+      bodySmall: const TextStyle(color: Colors.black),
     ),
   );
 }

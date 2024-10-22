@@ -12,14 +12,45 @@ class CustomIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
+    return IconButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-        shape: const CircleBorder(),
+      style: ButtonStyle(
+        foregroundColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.grey;
+          }
+
+          if (states.contains(WidgetState.pressed)) {
+            return Colors.tealAccent;
+          }
+
+          return Colors.teal;
+        }),
+        side: WidgetStateProperty.resolveWith<BorderSide>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.disabled)) {
+              return const BorderSide(
+                color: Colors.grey,
+              );
+            }
+
+            if (states.contains(WidgetState.pressed)) {
+              return const BorderSide(
+                color: Colors.tealAccent,
+              );
+            }
+
+            return const BorderSide(
+              color: Colors.teal,
+              // width: 2.0
+            );
+          },
+        ),
       ),
-      label: Icon(icon),
+      icon: Icon(
+        icon,
+      ),
     );
   }
 }

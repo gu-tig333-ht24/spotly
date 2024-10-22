@@ -8,19 +8,18 @@ final darkModeProvider = StateNotifierProvider<DarkModeNotifier, bool>((ref) {
 class DarkModeNotifier extends StateNotifier<bool> {
   DarkModeNotifier() : super(true); // Default to dark mode
 
-
- void toggleDarkMode() {
+  void toggleDarkMode() {
     state = !state;
     _saveDarkModePreference(state);
   }
 
   Future<void> loadDarkModePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    state = prefs.getBool('isDarkMode') ?? true; // Default to dark mode
+    state = prefs.getBool("isDarkMode") ?? true; // Default to dark mode
   }
 
   Future<void> _saveDarkModePreference(bool isDarkMode) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDarkMode', isDarkMode);
+    await prefs.setBool("isDarkMode", isDarkMode);
   }
 }

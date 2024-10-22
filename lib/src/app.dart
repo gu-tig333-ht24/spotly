@@ -17,14 +17,14 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appState = ref.watch(appStateProvider);
-    final isDarkMode = ref.watch(darkModeProvider); // Listen on darkModeProvider
+    final isDarkMode = ref.watch(darkModeProvider);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppConstants.appTitle,
-      theme: isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme, // Change theme based on dark mode
+      theme: isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
       home: switch (appState.selectedTab) {
-        BottomTab.places => const CollectionListPage(),
+        BottomTab.collections => const CollectionListPage(),
         BottomTab.search => const SearchPage(),
         BottomTab.settings => const SettingsPage(),
       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_constants.dart';
+import '../constants/app_sizes.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String appBarTitle;
@@ -17,7 +18,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       title: Text(appBarTitle),
-      actions: actions,
+      actions: actions != null
+          ? [
+              ...actions!,
+              const SizedBox(width: AppSizes.s16),
+            ]
+          : null,
     );
   }
 

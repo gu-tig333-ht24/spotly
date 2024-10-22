@@ -17,7 +17,7 @@ class PlaceListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      tileColor: Colors.indigo,
+      tileColor: Colors.teal.shade900,
       title: Row(
         children: [
           Column(
@@ -25,12 +25,15 @@ class PlaceListTile extends StatelessWidget {
             children: [
               Icon(
                 Icons.image_rounded,
-                color: place.imagePath == null ? Colors.grey : Colors.green,
+                color: place.imagePath == null
+                    ? Colors.grey
+                    : Colors.teal.shade400,
               ),
               const SizedBox(height: AppSizes.s4),
               Icon(
                 Icons.location_on_rounded,
-                color: place.location == null ? Colors.grey : Colors.green,
+                color:
+                    place.location == null ? Colors.grey : Colors.teal.shade400,
               ),
             ],
           ),
