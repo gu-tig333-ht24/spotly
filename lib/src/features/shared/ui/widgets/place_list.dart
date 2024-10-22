@@ -5,6 +5,7 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 
 import '../../../../core/models/place.dart';
 import '../../../../core/widgets/centered_placeholder_text.dart';
+import '../../../place/add_edit_place/ui/pages/edit_place_page.dart';
 import '../../../place/place_detail/ui/pages/place_detail_page.dart';
 import '../../../place/places/ui/widgets/place_list_tile.dart';
 import '../../../share/providers/share_provider.dart';
@@ -20,6 +21,19 @@ class PlaceList extends StatelessWidget {
   final List<Place> places;
   final Function(Place place) onDelete;
 
+  void _navigateToEditPlacePage(
+    BuildContext context,
+    Place place,
+  ) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => EditPlacePage(
+            place: place,
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     if (places.isEmpty) {
@@ -31,6 +45,7 @@ class PlaceList extends StatelessWidget {
     return Consumer(builder: (context, WidgetRef ref, _) {
       return ListView.separated(
         itemCount: places.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 1),
         itemBuilder: (BuildContext _, int index) {
           final Place place = places[index];
 
@@ -69,7 +84,8 @@ class PlaceList extends StatelessWidget {
                   title: "Edit",
                   color: Colors.deepPurpleAccent,
                   onTap: (CompletionHandler handler) async {
-                    // TODO: Navigate to Edit Page
+                    handler(false);
+                    _navigateToEditPlacePage(context, place);
                   }),
             ],
             child: PlaceListTile(
@@ -83,7 +99,6 @@ class PlaceList extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (_, __) => const SizedBox(height: 1),
       );
     });
   }

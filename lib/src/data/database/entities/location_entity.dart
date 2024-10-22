@@ -26,4 +26,18 @@ class LocationEntity {
         "longitude": longitude,
         "address": address,
       };
+
+  LocationEntity copyWith({
+    int? id,
+    double? latitude,
+    double? longitude,
+    String? address,
+  }) {
+    return LocationEntity(
+      id: id ?? this.id,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      address: address ?? this.address,
+    );
+  }
 }

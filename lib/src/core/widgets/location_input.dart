@@ -7,15 +7,18 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../features/place/place_detail/ui/pages/map_page.dart';
+import '../constants/app_sizes.dart';
 import '../models/location.dart';
 
 class LocationInput extends StatefulWidget {
   const LocationInput({
     super.key,
     required this.onLocationSelected,
+    this.initialSelection,
   });
 
   final Function(Location) onLocationSelected;
+  final Location? initialSelection;
 
   @override
   State<LocationInput> createState() {
@@ -26,6 +29,56 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   Location? _pickedLocation;
   var _isGettingLocation = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.initialSelection == null) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializePicker(widget.initialSelection!);
+    });
+  }
+
+  Future<void> _initializePicker(Location location) async {
+    setState(() {
+      _isGettingLocation = true;
+    });
+
+    final lat = location.latitude;
+    final lng = location.longitude;
+
+    if (lng == null) {
+      return;
+    }
+    String address =
+        "Unknown location"; // Standardvärde tills adressen hämtas via API
+
+    _savePlace(lat, lng);
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyAURvTmbqxJjORFFxip40ar2E1Yo1l5aJc');
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    address = resData['results'][0]['formatted_address'];
+
+    setState(() {
+      _pickedLocation = Location(
+        id: location.id,
+        latitude: lat,
+        longitude: lng,
+        address: address,
+      );
+      _isGettingLocation = false;
+    });
+
+    // Skicka tillbaka platsen till AddPlaceScreen
+    widget.onLocationSelected(_pickedLocation!);
+
+    _savePlace(lat, lng);
+  }
 
   String get locationImage {
     if (_pickedLocation == null) {
@@ -46,8 +99,12 @@ class _LocationInputState extends State<LocationInput> {
     final address = resData['results'][0]['formatted_address'];
 
     setState(() {
-      _pickedLocation =
-          Location(latitude: latitude, longitude: longitude, address: address);
+      _pickedLocation = Location(
+        id: -1,
+        latitude: latitude,
+        longitude: longitude,
+        address: address,
+      );
       _isGettingLocation = false;
     });
     widget.onLocationSelected(_pickedLocation!);
@@ -101,15 +158,17 @@ class _LocationInputState extends State<LocationInput> {
     address = resData['results'][0]['formatted_address'];
 
     setState(() {
-      _pickedLocation =
-          Location(latitude: lat, longitude: lng, address: address);
+      _pickedLocation = Location(
+        id: -1,
+        latitude: lat,
+        longitude: lng,
+        address: address,
+      );
       _isGettingLocation = false;
     });
 
     // Skicka tillbaka platsen till AddPlaceScreen
-    widget.onLocationSelected(
-      Location(latitude: lat, longitude: lng, address: address),
-    );
+    widget.onLocationSelected(_pickedLocation!);
 
     _savePlace(lat, lng);
   }
@@ -169,9 +228,9 @@ class _LocationInputState extends State<LocationInput> {
           ),
           child: previewContent,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: AppSizes.s10),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton.icon(
               icon: const Icon(Icons.location_on),

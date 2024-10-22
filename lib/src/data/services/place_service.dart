@@ -19,13 +19,13 @@ class PlaceService {
     }
 
     if (place.imagePath != null) {
-      await _deleteFileFromStorage(place.imagePath!);
+      await deleteFileFromStorage(place.imagePath!);
     }
 
     return true;
   }
 
-  Future<void> _deleteFileFromStorage(String filePath) async {
+  Future<void> deleteFileFromStorage(String filePath) async {
     final file = File(filePath);
 
     if (!await file.exists()) {

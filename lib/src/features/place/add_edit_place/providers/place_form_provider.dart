@@ -6,13 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/models/location.dart';
 
-final addPlaceFormProvider = StateNotifierProvider.autoDispose<
-    AddPlaceFormController, AddPlaceFormState>((ref) {
-  return AddPlaceFormController();
+final placeFormProvider = StateNotifierProvider.autoDispose<
+    PlaceFormController, PlaceFormState>((ref) {
+  return PlaceFormController();
 });
 
-class AddPlaceFormController extends StateNotifier<AddPlaceFormState> {
-  AddPlaceFormController() : super(AddPlaceFormState.initial());
+class PlaceFormController extends StateNotifier<PlaceFormState> {
+  PlaceFormController() : super(PlaceFormState.initial());
 
   void changeTitle(String newTitle) {
     state = state.copyWith(title: newTitle);
@@ -36,8 +36,8 @@ class AddPlaceFormController extends StateNotifier<AddPlaceFormState> {
 }
 
 @immutable
-class AddPlaceFormState {
-  const AddPlaceFormState({
+class PlaceFormState {
+  const PlaceFormState({
     required this.title,
     required this.description,
     this.imagePath,
@@ -45,7 +45,7 @@ class AddPlaceFormState {
     this.selectedImageFile,
   });
 
-  factory AddPlaceFormState.initial() => const AddPlaceFormState(
+  factory PlaceFormState.initial() => const PlaceFormState(
         title: "",
         description: "",
         imagePath: null,
@@ -62,14 +62,14 @@ class AddPlaceFormState {
 
   bool get isValid => title.isNotEmpty;
 
-  AddPlaceFormState copyWith({
+  PlaceFormState copyWith({
     String? title,
     String? description,
     String? imagePath,
     Location? location,
     File? selectedImageFile,
   }) {
-    return AddPlaceFormState(
+    return PlaceFormState(
       title: title ?? this.title,
       description: description ?? this.description,
       imagePath: imagePath ?? this.imagePath,

@@ -6,15 +6,18 @@ import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../core/constants/app_sizes.dart';
 import 'image_content_view.dart';
 
 class CustomImagePicker extends StatefulWidget {
   const CustomImagePicker({
     super.key,
     required this.onImageSelected,
+    this.initialSelection,
   });
 
   final Function(File file) onImageSelected;
+  final File? initialSelection;
 
   @override
   State<CustomImagePicker> createState() => _CustomImagePickerState();
@@ -24,20 +27,39 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
   File? _selectedImageFile;
   Uint8List? _selectedImageBytes;
 
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.initialSelection == null) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializePicker(widget.initialSelection!);
+    });
+  }
+
+  void _initializePicker(File image) {
+    _changeImage(image);
+  }
+
+  void _changeImage(File file) {
+    setState(() => _selectedImageFile = file);
+    widget.onImageSelected(file);
+  }
+
   Future<void> _pickImageFromGallery() async {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 24
+      imageQuality: 25,
     );
     if (pickedImage == null) {
       return;
     }
 
-    setState(() {
-      _selectedImageFile = File(pickedImage.path);
-    });
-    widget.onImageSelected(_selectedImageFile!);
+    _changeImage(File(pickedImage.path));
   }
 
   Future<void> _takePictureWithCamera() async {
@@ -57,10 +79,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
         _selectedImageBytes = imageBytes;
       });
     } else {
-      setState(() {
-        _selectedImageFile = File(pickedImage.path);
-      });
-      widget.onImageSelected(_selectedImageFile!);
+      _changeImage(File(pickedImage.path));
     }
   }
 
@@ -83,6 +102,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
             imageFile: _selectedImageFile,
           ),
         ),
+        const SizedBox(height: AppSizes.s10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -90,10 +110,6 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               onPressed: _pickImageFromGallery,
               icon: const Icon(Icons.photo_album_rounded),
               label: const Text("Pick Image"),
-            ),
-            const Text(
-              "or",
-              style: TextStyle(color: Colors.white70),
             ),
             TextButton.icon(
               onPressed: _takePictureWithCamera,

@@ -77,6 +77,7 @@ class _CollectionListViewState extends ConsumerState<CollectionListView> {
 
         return ListView.separated(
           itemCount: collections.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 1),
           itemBuilder: (BuildContext _, int index) {
             final Collection collection = collections[index];
 
@@ -106,7 +107,6 @@ class _CollectionListViewState extends ConsumerState<CollectionListView> {
               ),
             );
           },
-          separatorBuilder: (_, __) => const SizedBox(height: 1),
         );
       },
       error: (e, _) => CenteredErrorText(errorMessage: e.toString()),

@@ -2,64 +2,56 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
 import '../../../../../core/widgets/custom_icon_button.dart';
 import '../../../places/providers/place_list_provider.dart';
-import '../../providers/add_place_form_provider.dart';
-import '../widgets/add_place_form.dart';
+import '../../providers/place_form_provider.dart';
+import '../widgets/place_form.dart';
 
-class AddPlacePage extends ConsumerWidget {
-  const AddPlacePage({
+class EditPlacePage extends ConsumerWidget {
+  const EditPlacePage({
     super.key,
-    required this.collectionId,
+    required this.place,
   });
 
-  final int collectionId;
+  final Place place;
 
-  void _addPlace(
+  void _editPlace(
     BuildContext context,
     WidgetRef ref,
-    AddPlaceFormState formState,
+    PlaceFormState formState,
   ) {
-    // TODO: uncomment if location should be mandatory.
-    // if (formState.location == null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text("Please select a location."),
-    //     ),
-    //   );
-    //   return;
-    // }
-
     ref
         .read(placeListProvider.notifier)
-        .addPlaceFromFormState(formState, collectionId);
+        .updatePlaceFromFormState(place, formState);
 
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AddPlaceFormState formState = ref.watch(addPlaceFormProvider);
+    final PlaceFormState formState = ref.watch(placeFormProvider);
 
     return Scaffold(
       appBar: CustomAppBar(
-        appBarTitle: "Add Place",
+        appBarTitle: "Edit Place",
         actions: [
           Tooltip(
             message: "Save",
             preferBelow: true,
             child: CustomIconButton(
               onPressed: formState.isValid
-                  ? () => _addPlace(context, ref, formState)
+                  ? () => _editPlace(context, ref, formState)
                   : null,
               icon: Icons.check_rounded,
             ),
           ),
         ],
       ),
-      body: AddPlaceForm(
-        onSubmit: () => _addPlace(context, ref, formState),
+      body: PlaceForm(
+        place: place,
+        onSubmit: () => _editPlace(context, ref, formState),
       ),
     );
   }

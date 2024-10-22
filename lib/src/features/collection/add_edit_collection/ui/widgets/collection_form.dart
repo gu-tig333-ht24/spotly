@@ -42,15 +42,21 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
     _titleNode = FocusNode();
     _descriptionNode = FocusNode();
 
-    if (widget.collection != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _titleController.text = widget.collection!.title;
-        _formController.changeTitle(_titleController.text);
-
-        _descriptionController.text = widget.collection!.description ?? "";
-        _formController.changeDescription(_descriptionController.text);
-      });
+    if (widget.collection == null) {
+      return;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeForm(widget.collection!);
+    });
+  }
+
+  void _initializeForm(Collection collection) {
+    _titleController.text = collection.title;
+    _formController.changeTitle(_titleController.text);
+
+    _descriptionController.text = collection.description ?? "";
+    _formController.changeDescription(_descriptionController.text);
   }
 
   @override

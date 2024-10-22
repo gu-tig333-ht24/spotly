@@ -58,6 +58,7 @@ class UserPlacesNotifier extends StateNotifier<List<Place>> {
 
       // Skapa en standardplats om ingen platsdata finns
       final placeLocation = Location(
+        id: -1,
         latitude: 0.0, // Ange default-värden om ingen plats är sparad
         longitude: 0.0,
         address: 'No address available',

@@ -18,21 +18,43 @@ class PlaceListTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       tileColor: Colors.indigo,
-      title: Text(
-        place.title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: place.description != null && place.description!.isNotEmpty
-          ? Text(
-              place.description!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          : null,
-      leading: Icon(
-        Icons.image_rounded,
-        color: place.imagePath == null ? Colors.grey : Colors.green,
+      title: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.image_rounded,
+                color: place.imagePath == null ? Colors.grey : Colors.green,
+              ),
+              const SizedBox(height: AppSizes.s4),
+              Icon(
+                Icons.location_on_rounded,
+                color: place.location == null ? Colors.grey : Colors.green,
+              ),
+            ],
+          ),
+          const SizedBox(width: AppSizes.s10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                place.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              if (place.description != null &&
+                  place.description!.isNotEmpty) ...[
+                const SizedBox(height: AppSizes.s4),
+                Text(
+                  place.description!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ],
+          ),
+        ],
       ),
       trailing: const Icon(
         Icons.chevron_right,
