@@ -6,12 +6,12 @@ class Location {
     required this.address,
   });
 
-  factory Location.fromMap(Map<String, dynamic> json) {
+  factory Location.fromMap(Map<String, dynamic> map) {
     return Location(
-      id: json["id"] as int,
-      latitude: json["latitude"] as double,
-      longitude: json["longitude"] as double,
-      address: json["address"] as String?,
+      id: map["id"] as int,
+      latitude: map["latitude"] as double,
+      longitude: map["longitude"] as double,
+      address: map["address"] as String?,
     );
   }
 
@@ -27,5 +27,19 @@ class Location {
       "longitude": longitude,
       "address": address,
     };
+  }
+
+  Location copyWith({
+    int? id,
+    double? latitude,
+    double? longitude,
+    String? address,
+  }) {
+    return Location(
+      id: id ?? this.id,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      address: address ?? this.address,
+    );
   }
 }

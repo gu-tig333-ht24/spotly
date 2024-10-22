@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -6,9 +8,15 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../features/place/place_detail/ui/pages/map_page.dart';
+import '../../features/shared/ui/pages/map_page.dart';
 import '../constants/app_sizes.dart';
 import '../models/location.dart';
+
+const String _staticMapBaseUrl =
+    "https://maps.googleapis.com/maps/api/staticmap";
+const String _addressBaseUrl =
+    "https://maps.googleapis.com/maps/api/geocode/json";
+const String _apiKey = "AIzaSyAURvTmbqxJjORFFxip40ar2E1Yo1l5aJc";
 
 class LocationInput extends StatefulWidget {
   const LocationInput({
@@ -38,157 +46,140 @@ class _LocationInputState extends State<LocationInput> {
       return;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializePicker(widget.initialSelection!);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initializePicker(widget.initialSelection!);
     });
   }
 
   Future<void> _initializePicker(Location location) async {
-    setState(() {
-      _isGettingLocation = true;
-    });
-
-    final lat = location.latitude;
-    final lng = location.longitude;
-
-    if (lng == null) {
-      return;
-    }
-    String address =
-        "Unknown location"; // Standardvärde tills adressen hämtas via API
-
-    _savePlace(lat, lng);
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyAURvTmbqxJjORFFxip40ar2E1Yo1l5aJc');
-    final response = await http.get(url);
-    final resData = json.decode(response.body);
-    address = resData['results'][0]['formatted_address'];
-
-    setState(() {
-      _pickedLocation = Location(
-        id: location.id,
-        latitude: lat,
-        longitude: lng,
-        address: address,
-      );
-      _isGettingLocation = false;
-    });
-
-    // Skicka tillbaka platsen till AddPlaceScreen
-    widget.onLocationSelected(_pickedLocation!);
-
-    _savePlace(lat, lng);
+    setState(() => _isGettingLocation = true);
+    await _selectLocation(location);
+    setState(() => _isGettingLocation = false);
   }
 
-  String get locationImage {
-    if (_pickedLocation == null) {
-      return '';
+  Future<void> _selectLocation(Location location) async {
+    final address = await _getAddressFromApi(
+          location.latitude,
+          location.longitude,
+        ) ??
+        "Unknown location";
+
+    _pickedLocation = location.copyWith(
+      id: location.id,
+      address: address,
+    );
+
+    // Notify anything listening about the picked location.
+    widget.onLocationSelected(_pickedLocation!);
+  }
+
+  Future<String?> _getAddressFromApi(double latitude, double longitude) async {
+    final url = Uri.parse(
+      "$_addressBaseUrl?latlng=$latitude,$longitude&key=$_apiKey",
+    );
+
+    final response = await http.get(url);
+    if (response.statusCode != HttpStatus.ok) {
+      return null;
     }
+
+    final data = json.decode(response.body);
+    return data["results"][0]["formatted_address"];
+  }
+
+  String get locationImageUrl {
+    if (_pickedLocation == null) {
+      return "";
+    }
+
     final lat = _pickedLocation!.latitude;
     final lng = _pickedLocation!.longitude;
 
-    // Korrigerad URL med "=" efter "center"
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=AIzaSyAURvTmbqxJjORFFxip40ar2E1Yo1l5aJc';
+    return "$_staticMapBaseUrl?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$_apiKey";
   }
 
-  void _savePlace(double latitude, double longitude) async {
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyAURvTmbqxJjORFFxip40ar2E1Yo1l5aJc');
-    final response = await http.get(url);
-    final resData = json.decode(response.body);
-    final address = resData['results'][0]['formatted_address'];
-
-    setState(() {
-      _pickedLocation = Location(
-        id: -1,
-        latitude: latitude,
-        longitude: longitude,
-        address: address,
-      );
-      _isGettingLocation = false;
-    });
-    widget.onLocationSelected(_pickedLocation!);
-  }
-
-  Future<void> _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Kolla om platstjänster är aktiverade
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
+  Future<bool> hasPermissions() async {
+    // Check if location services are enabled.
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      return false;
     }
 
-    // Kolla och begär platsbehörigheter
-    permission = await Geolocator.checkPermission();
+    // Check and request location permissions.
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return;
+        return false;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return;
+      return false;
     }
 
-    setState(() {
-      _isGettingLocation = true;
-    });
-
-    // Hämta platsen
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    final lat = position.latitude;
-    final lng = position.longitude;
-
-    if (lng == null) {
-      return;
-    }
-    String address =
-        "Unknown location"; // Standardvärde tills adressen hämtas via API
-
-    _savePlace(lat, lng);
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyAURvTmbqxJjORFFxip40ar2E1Yo1l5aJc');
-    final response = await http.get(url);
-    final resData = json.decode(response.body);
-    address = resData['results'][0]['formatted_address'];
-
-    setState(() {
-      _pickedLocation = Location(
-        id: -1,
-        latitude: lat,
-        longitude: lng,
-        address: address,
-      );
-      _isGettingLocation = false;
-    });
-
-    // Skicka tillbaka platsen till AddPlaceScreen
-    widget.onLocationSelected(_pickedLocation!);
-
-    _savePlace(lat, lng);
+    return true;
   }
 
-  void _selectOnMap() async {
+  Future<void> _getCurrentLocation() async {
+    if (!await hasPermissions()) {
+      return;
+    }
+
+    setState(() => _isGettingLocation = true);
+
+    // Get current position.
+    final Position position;
+    try {
+      position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+    } on TimeoutException {
+      setState(() => _isGettingLocation = false);
+      return;
+    }
+
+    await _selectLocation(
+      Location(
+        id: -1,
+        latitude: position.latitude,
+        longitude: position.longitude,
+        address: null,
+      ),
+    );
+
+    setState(() => _isGettingLocation = false);
+  }
+
+  Future<void> _selectOnMap() async {
     final pickedLocation = await Navigator.of(context).push<LatLng>(
       MaterialPageRoute(
-        builder: (ctx) => const MapPage(),
+        builder: (ctx) => MapPage(
+          initialLocation: widget.initialSelection,
+        ),
       ),
     );
     if (pickedLocation == null) {
       return;
     }
-    _savePlace(pickedLocation.latitude, pickedLocation.longitude);
+
+    setState(() => _isGettingLocation = true);
+
+    await _selectLocation(
+      Location(
+        id: -1,
+        latitude: pickedLocation.latitude,
+        longitude: pickedLocation.longitude,
+        address: null,
+      ),
+    );
+
+    setState(() => _isGettingLocation = false);
   }
 
   @override
   Widget build(BuildContext context) {
     Widget previewContent = Text(
-      'No location chosen',
+      "No location chosen",
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
@@ -197,13 +188,13 @@ class _LocationInputState extends State<LocationInput> {
 
     if (_pickedLocation != null) {
       previewContent = Image.network(
-        locationImage,
+        locationImageUrl,
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
           return const Text(
-            'Could not load map.',
+            "Could not load map.",
             textAlign: TextAlign.center,
           );
         },
@@ -234,12 +225,12 @@ class _LocationInputState extends State<LocationInput> {
           children: [
             TextButton.icon(
               icon: const Icon(Icons.location_on),
-              label: const Text('Get current location'),
+              label: const Text("Get current location"),
               onPressed: _getCurrentLocation,
             ),
             TextButton.icon(
               icon: const Icon(Icons.map),
-              label: const Text('Select on map'),
+              label: const Text("Select on map"),
               onPressed: _selectOnMap,
             ),
           ],

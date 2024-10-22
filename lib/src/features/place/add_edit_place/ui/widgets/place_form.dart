@@ -63,6 +63,10 @@ class _PlaceFormState extends ConsumerState<PlaceForm> {
 
     _descriptionController.text = place.description ?? "";
     _formController.changeDescription(_descriptionController.text);
+
+    if (place.location != null) {
+      _selectPlaceLocation(place.location!);
+    }
   }
 
   @override
@@ -77,7 +81,7 @@ class _PlaceFormState extends ConsumerState<PlaceForm> {
   }
 
   void _selectPlaceLocation(Location location) {
-    _selectedLocation = location;
+    setState(() => _selectedLocation = location);
     _formController.changeLocation(_selectedLocation);
   }
 
@@ -123,13 +127,12 @@ class _PlaceFormState extends ConsumerState<PlaceForm> {
                     ? File(widget.place!.imagePath!)
                     : null,
                 onImageSelected: (File file) {
-                  // TODO: do we really need imagePath if we have the file?
                   _formController.changeImagePath(file.path);
                   _formController.changeSelectedImageFile(file);
                 }),
             const SizedBox(height: AppSizes.s10),
             LocationInput(
-              initialSelection: widget.place?.location,
+              initialSelection: _selectedLocation ?? widget.place?.location,
               onLocationSelected: _selectPlaceLocation,
             ),
           ],
