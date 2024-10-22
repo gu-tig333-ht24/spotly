@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/place.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
+import '../../../../../core/widgets/custom_icon_button.dart';
+import '../../../add_edit_place/ui/pages/edit_place_page.dart';
 import '../widgets/image_placeholder.dart';
 import '../widgets/location_details.dart';
 import '../widgets/location_map_view.dart';
@@ -18,11 +20,34 @@ class PlaceDetailPage extends StatelessWidget {
 
   final Place place;
 
+  void _navigateToEditPlacePage(
+    BuildContext context,
+    Place place,
+  ) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => EditPlacePage(
+            place: place,
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         appBarTitle: place.title,
+        actions: [
+          Tooltip(
+            message: "Edit Place",
+            preferBelow: true,
+            child: CustomIconButton(
+              onPressed: () => _navigateToEditPlacePage(context, place),
+              icon: Icons.edit_rounded,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

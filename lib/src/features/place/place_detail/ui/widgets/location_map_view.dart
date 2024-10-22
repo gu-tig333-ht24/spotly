@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/models/location.dart';
-import '../pages/map_page.dart';
+import '../../../../shared/ui/pages/map_page.dart';
 
 class LocationMapView extends StatelessWidget {
   const LocationMapView({
@@ -55,7 +55,7 @@ class LocationMapView extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (ctx) => MapPage(
-                  location: location,
+                  initialLocation: location,
                   isSelecting: false,
                 ),
               ),
