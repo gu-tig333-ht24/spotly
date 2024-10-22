@@ -32,24 +32,28 @@ class _SearchBarState extends ConsumerState<CustomSearchBar> {
     super.dispose();
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return TextField(
       controller: _searchTextController,
-      style: TextStyle(color: Theme.of(context).colorScheme.onSurface), // Dynamic colour
+      // style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: "Search for Places...",
-        hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)), 
+        // hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+        hintStyle: const TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
         suffixIcon: _searchTextController.text.isNotEmpty
             ? IconButton(
-                icon: Icon(Icons.clear, color: Theme.of(context).colorScheme.onSurface),
+                icon: Icon(Icons.clear,
+                    color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () {
                   _searchTextController.clear();
-                  _placeSearchController.searchPlaces(_searchTextController.text);
+                  _placeSearchController
+                      .searchPlaces(_searchTextController.text);
                 },
               )
             : null,
