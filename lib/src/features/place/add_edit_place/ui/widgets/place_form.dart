@@ -91,51 +91,53 @@ class _PlaceFormState extends ConsumerState<PlaceForm> {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSizes.s20),
-      child: Form(
-        child: Column(
-          children: [
-            const SizedBox(height: AppSizes.s10),
-            CustomTextFormField(
-              controller: _titleController,
-              labelText: "Title",
-              onChanged: _formController.changeTitle,
-              onFieldSubmitted: (_) {
-                FocusScope.of(context).requestFocus(_descriptionNode);
-              },
-              focusNode: _titleNode,
-              textInputAction: TextInputAction.next,
-              isRequired: true,
-            ),
-            const SizedBox(height: AppSizes.s20),
-            CustomTextFormField(
-              controller: _descriptionController,
-              labelText: "Description",
-              onChanged: _formController.changeDescription,
-              onFieldSubmitted: (_) {
-                if (formState.isValid) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                }
-              },
-              focusNode: _descriptionNode,
-              textInputAction: TextInputAction.done,
-              hasClearButton: false,
-              maxLines: 2,
-            ),
-            const SizedBox(height: AppSizes.s20),
-            CustomImagePicker(
-                initialSelection: widget.place?.imagePath != null
-                    ? File(widget.place!.imagePath!)
-                    : null,
-                onImageSelected: (File file) {
-                  _formController.changeImagePath(file.path);
-                  _formController.changeSelectedImageFile(file);
-                }),
-            const SizedBox(height: AppSizes.s10),
-            LocationInput(
-              initialSelection: _selectedLocation ?? widget.place?.location,
-              onLocationSelected: _selectPlaceLocation,
-            ),
-          ],
+      child: SafeArea(
+        child: Form(
+          child: Column(
+            children: [
+              const SizedBox(height: AppSizes.s10),
+              CustomTextFormField(
+                controller: _titleController,
+                labelText: "Title",
+                onChanged: _formController.changeTitle,
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_descriptionNode);
+                },
+                focusNode: _titleNode,
+                textInputAction: TextInputAction.next,
+                isRequired: true,
+              ),
+              const SizedBox(height: AppSizes.s20),
+              CustomTextFormField(
+                controller: _descriptionController,
+                labelText: "Description",
+                onChanged: _formController.changeDescription,
+                onFieldSubmitted: (_) {
+                  if (formState.isValid) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }
+                },
+                focusNode: _descriptionNode,
+                textInputAction: TextInputAction.done,
+                hasClearButton: false,
+                maxLines: 2,
+              ),
+              const SizedBox(height: AppSizes.s20),
+              CustomImagePicker(
+                  initialSelection: widget.place?.imagePath != null
+                      ? File(widget.place!.imagePath!)
+                      : null,
+                  onImageSelected: (File file) {
+                    _formController.changeImagePath(file.path);
+                    _formController.changeSelectedImageFile(file);
+                  }),
+              const SizedBox(height: AppSizes.s10),
+              LocationInput(
+                initialSelection: _selectedLocation ?? widget.place?.location,
+                onLocationSelected: _selectPlaceLocation,
+              ),
+            ],
+          ),
         ),
       ),
     );

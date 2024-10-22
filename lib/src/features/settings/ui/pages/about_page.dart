@@ -12,8 +12,8 @@ class AboutPage extends StatelessWidget {
       appBar: const CustomAppBar(
         appBarTitle: "About",
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.s20),
+      body: SafeArea(
+        minimum: const EdgeInsets.all(AppSizes.s20),
         child: Center(
           child: Text(
             "This app was created by students at Gothenburg University.\n\n"

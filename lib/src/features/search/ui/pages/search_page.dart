@@ -18,8 +18,8 @@ class SearchPage extends StatelessWidget {
       bottomNavigationBar: CustomNavigationBar(),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(AppSizes.s20),
+          SafeArea(
+            minimum: EdgeInsets.all(AppSizes.s20),
             child: CustomSearchBar(),
           ),
           Expanded(

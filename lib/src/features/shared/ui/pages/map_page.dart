@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/models/location.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_icon_button.dart';
 
@@ -113,28 +114,36 @@ class _MapPageState extends State<MapPage> {
             ),
         ],
       ),
-      body: GoogleMap(
-        onMapCreated: _initializeMap,
-        onTap: widget.isSelecting
-            ? (LatLng position) => setState(() => _pickedCoordinates = position)
-            : null,
-        initialCameraPosition: CameraPosition(
-          target: _pickedCoordinates != null
-              ? _pickedCoordinates!
-              : const LatLng(
-                  37.422,
-                  -122.084,
-                ),
-          zoom: 16,
+      body: Container(
+        color: kBackgroundColor,
+        child: SafeArea(
+          left: false,
+          right: false,
+          child: GoogleMap(
+            onMapCreated: _initializeMap,
+            onTap: widget.isSelecting
+                ? (LatLng position) =>
+                    setState(() => _pickedCoordinates = position)
+                : null,
+            initialCameraPosition: CameraPosition(
+              target: _pickedCoordinates != null
+                  ? _pickedCoordinates!
+                  : const LatLng(
+                      37.422,
+                      -122.084,
+                    ),
+              zoom: 16,
+            ),
+            markers: (_pickedCoordinates != null)
+                ? {
+                    Marker(
+                      markerId: const MarkerId("m1"),
+                      position: _pickedCoordinates!,
+                    ),
+                  }
+                : {},
+          ),
         ),
-        markers: (_pickedCoordinates != null)
-            ? {
-                Marker(
-                  markerId: const MarkerId("m1"),
-                  position: _pickedCoordinates!,
-                ),
-              }
-            : {},
       ),
     );
   }

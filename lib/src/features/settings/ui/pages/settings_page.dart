@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/providers/dark_mode_provider.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_navigation_bar.dart';
@@ -27,6 +28,7 @@ class SettingsPage extends ConsumerWidget {
       ),
       bottomNavigationBar: const CustomNavigationBar(),
       body: ListView(
+        padding: const EdgeInsets.only(bottom: AppSizes.s20),
         children: [
           // Dark mode toggle switch
           SwitchListTile(

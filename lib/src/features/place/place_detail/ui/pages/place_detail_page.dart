@@ -50,13 +50,14 @@ class PlaceDetailPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: AppSizes.s20),
         child: Column(
           children: [
             Container(
               height: 250,
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.white10,
+                color: Colors.grey,
               ),
               child: place.imagePath != null && place.imagePath!.isNotEmpty
                   ? Image.file(
@@ -78,14 +79,16 @@ class PlaceDetailPage extends StatelessWidget {
                   : const ImagePlaceholder(),
             ),
             const SizedBox(height: AppSizes.s20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
+            SafeArea(
+              minimum: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
+              bottom: false,
               child: PlaceDetails(place: place),
             ),
             if (place.location != null) ...[
               const SizedBox(height: AppSizes.s20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
+              SafeArea(
+                minimum: const EdgeInsets.symmetric(horizontal: AppSizes.s20),
+                bottom: false,
                 child: LocationDetails(location: place.location!),
               ),
               const SizedBox(height: AppSizes.s20),
