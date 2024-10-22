@@ -94,8 +94,7 @@ class SqliteDatabaseRepository implements DatabaseRepository {
     final db = await database;
 
     final id = await db.insert(_collectionsTable, entity.toMap());
-    entity = entity.copyWith(id: id);
-    return entity;
+    return entity.copyWith(id: id);
   }
 
   @override
@@ -112,12 +111,6 @@ class SqliteDatabaseRepository implements DatabaseRepository {
 
     final List<Map<String, Object?>> results = await db.query(
       _collectionsTable,
-      columns: [
-        "id",
-        "title",
-        "description",
-        "createdAt",
-      ],
       where: "id = ?",
       whereArgs: [id],
     );
