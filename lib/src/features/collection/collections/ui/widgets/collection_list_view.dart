@@ -7,6 +7,7 @@ import '../../../../../core/models/collection.dart';
 import '../../../../../core/widgets/centered_error_text.dart';
 import '../../../../../core/widgets/centered_progress_indicator.dart';
 import '../../../../place/places/ui/pages/place_list_page.dart';
+import '../../../add_edit_collection/ui/pages/edit_collection_page.dart';
 import '../../providers/collection_list_provider.dart';
 import 'collection_list_tile.dart';
 
@@ -29,6 +30,30 @@ class _CollectionListViewState extends ConsumerState<CollectionListView> {
       _controller.retrieveCollections();
     });
   }
+
+  void _navigateToEditCollectionPage(
+    BuildContext context,
+    Collection collection,
+  ) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditCollectionPage(collection: collection),
+        ),
+      );
+
+  void _navigateToPlaceListPage(
+    BuildContext context,
+    Collection collection,
+  ) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PlaceListPage(
+            collection: collection,
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -71,19 +96,13 @@ class _CollectionListViewState extends ConsumerState<CollectionListView> {
                     title: "Edit",
                     color: Colors.deepPurpleAccent,
                     onTap: (CompletionHandler handler) async {
-                      // TODO: Navigate to Edit Page
+                      handler(false);
+                      _navigateToEditCollectionPage(context, collection);
                     }),
               ],
               child: CollectionListTile(
                 collection: collection,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => PlaceListPage(
-                      collection: collection,
-                    ),
-                  ),
-                ),
+                onTap: () => _navigateToPlaceListPage(context, collection),
               ),
             );
           },

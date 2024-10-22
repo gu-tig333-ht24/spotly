@@ -3,24 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/constants/app_sizes.dart';
+import '../../../../../core/models/collection.dart';
 import '../../../../../core/widgets/custom_filled_button.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
-import '../../providers/add_collection_form_provider.dart';
+import '../../providers/collection_form_provider.dart';
 
-class AddCollectionForm extends ConsumerStatefulWidget {
-  const AddCollectionForm({
+class CollectionForm extends ConsumerStatefulWidget {
+  const CollectionForm({
     super.key,
     required this.onSubmit,
+    this.collection,
   });
 
   final VoidCallback? onSubmit;
+  final Collection? collection;
 
   @override
-  ConsumerState<AddCollectionForm> createState() => _AddCollectionFormState();
+  ConsumerState<CollectionForm> createState() => _CollectionFormState();
 }
 
-class _AddCollectionFormState extends ConsumerState<AddCollectionForm> {
-  late final AddCollectionFormController _formController;
+class _CollectionFormState extends ConsumerState<CollectionForm> {
+  late final CollectionFormController _formController;
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
 
@@ -31,13 +34,23 @@ class _AddCollectionFormState extends ConsumerState<AddCollectionForm> {
   void initState() {
     super.initState();
 
-    _formController = ref.read(addCollectionFormProvider.notifier);
+    _formController = ref.read(collectionFormProvider.notifier);
 
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
 
     _titleNode = FocusNode();
     _descriptionNode = FocusNode();
+
+    if (widget.collection != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _titleController.text = widget.collection!.title;
+        _formController.changeTitle(_titleController.text);
+
+        _descriptionController.text = widget.collection!.description ?? "";
+        _formController.changeDescription(_descriptionController.text);
+      });
+    }
   }
 
   @override
@@ -53,8 +66,7 @@ class _AddCollectionFormState extends ConsumerState<AddCollectionForm> {
 
   @override
   Widget build(BuildContext context) {
-    final AddCollectionFormState formState =
-        ref.watch(addCollectionFormProvider);
+    final CollectionFormState formState = ref.watch(collectionFormProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.s20),

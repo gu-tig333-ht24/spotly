@@ -22,8 +22,7 @@ class CollectionListController
   final DatabaseService _databaseService;
 
   Future<void> addCollection(String title, String? description) async {
-    final Collection newCollection =
-        await _databaseService.createCollection(
+    final Collection newCollection = await _databaseService.createCollection(
       title,
       description,
     );
@@ -61,6 +60,42 @@ class CollectionListController
     }
   }
 
+  Future<void> updateCollection(Collection collection) async {
+    final updated = await _databaseService.updateCollection(collection);
+    if (!updated) {
+      return;
+    }
+
+    // final Collection? updatedCollection = await
+    //     _databaseService.retrieveCollectionById(
+    //   collection.id,
+    // );
+    // if (updatedCollection == null) {
+    //   return;
+    // }
+
+    final List<Collection> currentCollections = List.from(
+      state.value ?? [],
+    );
+
+    final index = currentCollections.indexWhere((c) => c.id == collection.id);
+    if (index == -1) {
+      return;
+    }
+
+    currentCollections[index] = collection;
+
+    try {
+      state = AsyncData(currentCollections);
+    } catch (e, st) {
+      state = AsyncError(e, st);
+
+      if (kDebugMode) {
+        debugPrint("❌ -> updateCollection(), error: $e");
+      }
+    }
+  }
+
   Future<void> deleteCollection(Collection collection) async {
     final deleted = await _databaseService.deleteCollectionById(
       collection.id,
@@ -80,7 +115,7 @@ class CollectionListController
     } catch (e, st) {
       state = AsyncError(e, st);
       if (kDebugMode) {
-        debugPrint("❌ -> addPlaceCollection(), error: $e");
+        debugPrint("❌ -> deleteCollection(), error: $e");
       }
     }
   }

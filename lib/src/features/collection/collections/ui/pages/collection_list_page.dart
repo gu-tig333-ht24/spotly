@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
 import '../../../../../core/widgets/custom_icon_button.dart';
 import '../../../../../core/widgets/custom_navigation_bar.dart';
-import '../../../add_collection/ui/pages/add_collection_page.dart';
+import '../../../add_edit_collection/ui/pages/add_collection_page.dart';
 import '../widgets/collection_list_view.dart';
 
 class CollectionListPage extends StatelessWidget {

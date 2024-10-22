@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/widgets/custom_app_bar.dart';
 import '../../../collections/providers/collection_list_provider.dart';
-import '../../providers/add_collection_form_provider.dart';
-import '../widgets/add_collection_form.dart';
+import '../../providers/collection_form_provider.dart';
+import '../widgets/collection_form.dart';
 
 class AddCollectionPage extends ConsumerWidget {
   const AddCollectionPage({super.key});
@@ -22,14 +22,13 @@ class AddCollectionPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AddCollectionFormState formState =
-        ref.watch(addCollectionFormProvider);
+    final CollectionFormState formState = ref.watch(collectionFormProvider);
 
     return Scaffold(
       appBar: const CustomAppBar(
         appBarTitle: "Add Collection",
       ),
-      body: AddCollectionForm(
+      body: CollectionForm(
         onSubmit: () => _addCollection(
           context,
           ref,
