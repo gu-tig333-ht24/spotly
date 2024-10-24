@@ -7,7 +7,7 @@ Found an interesting place?
 Assign a title to your places, include text notes, date and images that you can choose from your camera roll or take directly with the device camera. Edit or delete your place.
 Keep all your places in order by organizing them into Collections. For example, you are spending your holidays in London and you want to remember the most beautiful places you visited? Create a collection named "Holiday in London" and add the places in which you have been, perhaps attaching some nice pictures and position.
 Use the search tool to find places far away from you searching by name and change app settings if you prefer (enable notifications, enable light mode...).
-Shere your favourite places with the friends.
+Share your favourite places with the friends.
 
 
 
