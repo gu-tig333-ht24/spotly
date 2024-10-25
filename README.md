@@ -7,9 +7,10 @@ Keep your places organized by grouping them into Collections. For instance, if y
 
 Use the search feature to find distant places by name, and customize app settings to your liking (such as enabling notifications or switching to light mode). Share your favorite locations with friends!
 
-The Spotly app was developed by students at Gothenburg University as part of the TIG333 course in October 2024.
+The Spotly app was developed by students at Gothenburg University as part of the TIG333 course in October 2024.© All Rights Reserved
+
 Developers: Ali Ahsani, Filip Drincic, Tim Karlsson, Zane Neurothrone
-© All Rights Reserved
+
 
 #Technology Stack
 
