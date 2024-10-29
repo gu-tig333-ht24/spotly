@@ -34,35 +34,37 @@ class PlaceListTile extends StatelessWidget {
             ],
           ),
           const SizedBox(width: AppSizes.s10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                place.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-              ),
-              if (place.description != null &&
-                  place.description!.isNotEmpty) ...[
-                const SizedBox(height: AppSizes.s4),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  place.description!,
+                  place.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 14,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.9),
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
+                if (place.description != null &&
+                    place.description!.isNotEmpty) ...[
+                  const SizedBox(height: AppSizes.s4),
+                  Text(
+                    place.description!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.9),
+                        ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ],
       ),
