@@ -32,9 +32,9 @@ performance optimization.
 
 ### Images
 
-![collections-page.png](_assets/collections-page.png)
-![places-page.png](_assets/places-page.png)
-![place-detail-page.png](_assets/place-detail-page.png)
+![collections-page.png](_assets/collections-page.png)<br/>
+![places-page.png](_assets/places-page.png)<br/>
+![place-detail-page.png](_assets/place-detail-page.png)<br/>
 ![add-place-page.png](_assets/add-place-page.png)
 
 
