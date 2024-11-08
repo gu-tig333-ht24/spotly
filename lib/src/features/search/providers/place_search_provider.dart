@@ -41,7 +41,7 @@ class PlaceSearchController extends StateNotifier<AsyncValue<List<Place>>> {
     super.dispose();
   }
 
-  Future<void> searchPlaces(String searchText) async {
+  void searchPlaces(String searchText)  {
     _timer?.cancel();
     _timer = Timer(const Duration(milliseconds: 300), () async {
       try {
